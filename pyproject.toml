@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "common-utils"
 version = "0.1.0"
-description = ""
-authors = ["amz_office <m.a.zhang@outlook.com>"]
+description = "Collection of common utility functions."
+authors = ["amz <m.a.zhang@outlook.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
