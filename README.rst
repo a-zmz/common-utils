@@ -2,7 +2,7 @@ Common-Utils
 =====
 
 +------------------+----------------------------------------------------------------------+
-| Code style       | |black| |pre-commit|                                                 |
+| Code style       | |black|
 +------------------+----------------------------------------------------------------------+
 
 Many utility functions are used in multiple projects, so to make things easier, they
