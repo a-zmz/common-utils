@@ -1,6 +1,8 @@
 """
 This module contains math related helper functions to process data.
 """
+import multiprocessing as mp
+
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import linregress
@@ -27,16 +29,41 @@ def get_auc(y, x_lim, dx=1):
     # get auc
     return np.trapz(y[:x_lim], dx=dx)
 
+def _batch_sampling(rng, batch_size, array, size, axis):
 
-def random_sampling(array, size, axis=0, repeats=10000):
-    rng = np.random.default_rng()
+    return np.array(
+        [rng.choice(array, size=size, axis=axis)
+         for _ in range(batch_size)]
+    ).astype(int)
 
+
+def random_sampling(array, size, axis=0, repeats=10000, n_processes=None):
     # TODO: this is trial level chance, but also need a session level chance, i.e.,
     # randomly choose size from all number of wrong licks within a session, then use
     # that size as the size here to create random samples 
-    samples = np.array(
-        [rng.choice(array, size=size, axis=axis) for _ in range(repeats)]
-    ).astype(int)
+
+    # define number of processes
+    n_processes = n_processes or mp.cpu_count() - 2
+    # initiate random number generator
+    rng = np.random.default_rng()
+
+    # get batch size in each process
+    batch_size = repeats // n_processes
+    # create a pool of processes
+    pool = mp.Pool(processes=n_processes)
+    # apply sampling to each item in repeats
+    results = pool.starmap(
+        _batch_sampling,
+        [(rng, batch_size, array, size, axis)] * n_processes,
+    )
+
+    # stop adding task to pool
+    pool.close()
+    # wait till all tasks in pool completed
+    pool.join()
+
+    # concatenate batches of results
+    samples = np.concatenate(results)
 
     return samples
 
