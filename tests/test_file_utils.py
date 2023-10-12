@@ -3,7 +3,6 @@ Test file_utils module.
 """
 import unittest
 import os
-import shutil
 import tempfile
 from pathlib import Path
 
