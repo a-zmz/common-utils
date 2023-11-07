@@ -8,6 +8,8 @@ from scipy.optimize import curve_fit
 from scipy.stats import linregress
 import sympy as sp
 
+# initiate random number generator
+rng = np.random.default_rng()
 
 def get_auc(y, x_lim, dx=1):
     """
@@ -38,14 +40,12 @@ def _batch_sampling(rng, batch_size, array, size, axis):
 
 
 def random_sampling(array, size, axis=0, repeats=10000, n_processes=None):
-    # TODO: this is trial level chance, but also need a session level chance, i.e.,
-    # randomly choose size from all number of wrong licks within a session, then use
-    # that size as the size here to create random samples 
+    # TODO for vr session level chance, i.e., randomly choose size from all
+    # number of wrong licks within a session, then use that size as the size
+    # here to create random samples 
 
     # define number of processes
     n_processes = n_processes or mp.cpu_count() - 2
-    # initiate random number generator
-    rng = np.random.default_rng()
 
     # get batch size in each process
     batch_size = repeats // n_processes
@@ -340,3 +340,31 @@ def fit_heavistep(x, y, best_mid, normalised=False):
     d_mid = params[-1] * x.max() - best_mid
 
     return np.append(params, [maxima, minima, d_mid]).round(3)
+
+
+def confidence_interval(array, axis=0, samples=10000, size=25):
+    """
+    Compute the 95% confidence interval of some data in an array.
+
+    Parameters
+    ==========
+    array : np.array
+        The data, can have any number of dimensions.
+
+    axis : int, optional
+        The axis in which to compute CIs. This axis is collapsed in the output. Default:
+        0.
+
+    samples : int, optional
+        The number of samples to bootstrap. Default: 10000.
+
+    size : int, optional
+        The size of each boostrapped sample. Default: 25.
+
+    """
+    samps = random_sampling(array, size, axis, samples)
+
+    medians = np.median(samps, axis=-1)
+    results = np.percentile(medians, [2.5, 97.5], axis=0)
+
+    return results[1, ...] - results[0, ...]
