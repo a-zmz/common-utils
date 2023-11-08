@@ -23,5 +23,5 @@ pd.set_option(
 # plot display
 sns.set_context("paper")
 plt.tight_layout()
-sns.set(font_scale=0.8)
+sns.set(font_scale=0.7)
 sns.set_style("ticks")
