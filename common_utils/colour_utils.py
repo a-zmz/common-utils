@@ -22,7 +22,7 @@ cm_heatmap = LinearSegmentedColormap.from_list("cm_heatmap", blue_yellow)
 #light_dark = ["#2f83c6", "#000000"] # blue, black
 
 # purple, black & gray for light, dark & chance level
-light_dark = ["7d2fc7", "#000000"] # purple, black
+light_dark = ["#7d2fc7", "#000000"] # purple, black
 lgt_orange = "#e2b28a" # light orange
 data_chance = ["#86a4ba", "#999999"] # light blue, gray
 
