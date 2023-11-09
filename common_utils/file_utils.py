@@ -62,6 +62,9 @@ def copy_files(source: str, dests: list, basename: str) -> None:
     # find all files with the same basename in source dir
     files = filter(lambda name: name.startswith(basename), os.listdir(source))
 
+    # if dests not a list then make it one
+    dests = dests if isinstance(dests, list) else [dests]
+
     # copy them to destination
     for file in files:
         for dest in dests:
