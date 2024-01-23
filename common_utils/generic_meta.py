@@ -43,6 +43,7 @@ directories
 # data
 ardbeg = "~/rochefortlab/arthur/"
 storage = "~/storage/data/"
+processed = "~/processed/"
 interim = "~/interim/"
 server_w = "~/w/arthur/"
 server_v = "~/v/arthur/"
@@ -51,7 +52,8 @@ server_v = "~/v/arthur/"
 oestrus_meta = "/home/amz/w/arthur/JSONs"
 
 # histology
-hist_dir = "/home/amz/rochefortlab/arthur/histology/"
+#hist_dir = "/home/amz/rochefortlab/arthur/histology/" # raw & processed
+hist_dir = processed + "/histology/" # local processed
 
 # figures
 fig_dir = f"/home/amz/w/arthur/plots/behaviour/"
