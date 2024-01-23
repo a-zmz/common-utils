@@ -49,7 +49,7 @@ server_w = "~/w/arthur/"
 server_v = "~/v/arthur/"
 
 # meta
-oestrus_meta = "/home/amz/w/arthur/JSONs"
+oestrus_meta = "/home/amz/w/arthur/JSONs/"
 
 # histology
 #hist_dir = "/home/amz/rochefortlab/arthur/histology/" # raw & processed
@@ -62,8 +62,8 @@ crap_fig_dir = f"/home/amz/Pictures/crappy_plots/"
 #fig_prefix = f"{time.strftime('%Y%m%d')}_{'_'.join(mice)}_"
 
 # testing
-test_data = "/home/amz/running_data/npx"
-test_interim = "/home/amz/running_data/npx/interim"
+test_data = "/home/amz/running_data/npx/"
+test_interim = "/home/amz/running_data/npx/interim/"
 
 '''
 misc
