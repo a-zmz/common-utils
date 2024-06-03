@@ -368,3 +368,66 @@ def confidence_interval(array, axis=0, samples=10000, size=25):
     results = np.percentile(medians, [2.5, 97.5], axis=0)
 
     return results[1, ...] - results[0, ...]
+
+
+# Function to process data in chunks
+def interpolate_data(timestamps, trial_counts, values, new_timestamps,
+                          new_trial_counts, chunk_size=100000):
+    interpolated_values = np.empty(new_timestamps.shape)
+
+    num_chunks = len(new_timestamps) // chunk_size + (1 if len(new_timestamps) %
+                                                      chunk_size != 0 else 0)
+    for i in range(num_chunks):
+        start = i * chunk_size
+        end = min((i + 1) * chunk_size, len(new_timestamps))
+
+        new_points_chunk = np.array([new_timestamps[start:end], new_trial_counts[start:end]]).T
+
+        # Create a meshgrid for interpolation
+        timestamp_grid, trial_count_grid = np.meshgrid(timestamps, trial_counts)
+
+        # Flatten the meshgrid and combine with values for griddata input
+        points = np.array([timestamp_grid.flatten(), trial_count_grid.flatten()]).T
+        values_grid = np.tile(values, (len(trial_counts), 1)).flatten()
+
+        # Interpolate values at new points chunk
+        interpolated_values_chunk = griddata(points, values_grid, new_points_chunk, method='linear')
+
+        # Store the chunk of interpolated values
+        interpolated_values[start:end] = interpolated_values_chunk
+
+    return interpolated_values
+
+
+
+# TODO jun 3
+# Define the chunk size
+chunk_size = 100000  # Adjust this value based on your memory capacity
+
+# Function to process a single chunk
+def process_chunk(start, end, timestamps, trial_counts, values, new_timestamps, new_trial_counts):
+    new_points_chunk = np.array([new_timestamps[start:end], new_trial_counts[start:end]]).T
+
+    # Create a meshgrid for interpolation
+    timestamp_grid, trial_count_grid = np.meshgrid(timestamps, trial_counts)
+
+    # Flatten the meshgrid and combine with values for griddata input
+    points = np.array([timestamp_grid.flatten(), trial_count_grid.flatten()]).T
+    values_grid = np.tile(values, (len(trial_counts), 1)).flatten()
+
+    # Interpolate values at new points chunk
+    interpolated_values_chunk = griddata(points, values_grid, new_points_chunk, method='linear')
+
+    return interpolated_values_chunk
+
+# Calculate the number of chunks
+num_chunks = len(new_timestamps) // chunk_size + (1 if len(new_timestamps) % chunk_size != 0 else 0)
+
+# Use joblib to process chunks in parallel
+results = Parallel(n_jobs=-1)(delayed(process_chunk)(i * chunk_size, min((i + 1) * chunk_size, len(new_timestamps)),
+                                                    timestamps, trial_counts, values, new_timestamps, new_trial_counts)
+                              for i in range(num_chunks))
+
+# Combine the results into a single array
+interpolated_values = np.concatenate(results)
+
