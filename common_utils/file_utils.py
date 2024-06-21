@@ -9,6 +9,7 @@ from pathlib import Path
 import pickle
 import shutil
 
+import pandas as pd
 
 def make_path(target_dir):
     """
@@ -81,9 +82,14 @@ def copy_files(source: str, dests: list, basename: str) -> None:
                 #print("already copied, next")
                 continue
 
+def load_json(path: str):
+    file = json.load(open(path, mode="r"))
+
+    return file
+
 
 def read_json(path: str, names: list) -> None:
-    path = file_utils.make_path(path)
+    path = make_path(path)
     for name in names:
         metadata = pd.read_json(path / f"{name}.json")
         print(f"\n{name}\n {metadata}")
