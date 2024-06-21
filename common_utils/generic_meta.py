@@ -65,7 +65,7 @@ oestrus_meta = "/home/amz/w/arthur/JSONs/"
 hist_dir = processed + "/histology/" # local processed
 
 # figures
-fig_dir = f"/home/amz/w/arthur/plots/behaviour/"
+fig_dir = f"/home/amz/w/arthur/plots/"
 crap_fig_dir = f"/home/amz/Pictures/crappy_plots/"
 # TODO jan 3 mice is not defined, how to preset prefix here?
 #fig_prefix = f"{time.strftime('%Y%m%d')}_{'_'.join(mice)}_"
