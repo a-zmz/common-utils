@@ -42,10 +42,7 @@ cm_v1 = LinearSegmentedColormap.from_list("cm_v1", V1_orange)
 #HPF_blues = ["#0ea7b5", "#6bd2db", "#2f83c6", "#59a6e3", "#65ade6",
 #"#2f5fc6", "#2fc6be"]
 HPF_blue = ["#2f64c6", "#2f87c6", "#2fc3c6"] # blue, greenish blue
-plt.register_cmap(
-    name="cm_hpf",
-    cmap=LinearSegmentedColormap.from_list("Custom", HPF_blue),
-)
+cm_hpf = LinearSegmentedColormap.from_list("cm_v1", HPF_blue)
 '''hpf blues<<<'''
 
 # hue_order=colors.keys() will order seaborn legends accordingly
