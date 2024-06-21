@@ -2,10 +2,12 @@
 This module contains math related helper functions to process data.
 """
 import multiprocessing as mp
+import psutil
 
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import linregress
+from scipy.interpolate import interp1d, PchipInterpolator
 import sympy as sp
 
 # initiate random number generator
@@ -399,35 +401,121 @@ def interpolate_data(timestamps, trial_counts, values, new_timestamps,
     return interpolated_values
 
 
+# Function to initialize multiprocessing
+def interpolate_2d(x0, y0, values, x1, y1):
+    # TODO: jun 4th this func does NOT work!!!
+    """
+    Interpolate values from x0 y0 to x1 y1.
+    """
+    # define number of processes
+    n_processes = n_processes or mp.cpu_count() - 2
 
-# TODO jun 3
-# Define the chunk size
-chunk_size = 100000  # Adjust this value based on your memory capacity
+    # get memory info of the system
+    memory_info = psutil.virtual_memory()
+    total_memory = memory_info.total
+    available_memory = memory_info.available
+
+    # reserve some for other stuff
+    reserve = total_memory * 0.3
+    memory_to_use = available_memory - reserve
+
+    # get size in byte of data
+    x0_size = x0[0].dtype.itemsize * array.size
+    y0_size = y0[0].dtype.itemsize * array.size
+    values_size = values[0].dtype.itemsize * array.size
+    data_size = values_size + y0_size + x0_size
+
+    # get batch size in each process
+    batch_size = memory_to_use // data_size
+    n_batch = int(np.ceil(len(new_timestamps) / batch_size))
+    nn_batch = len(new_timestamps) // batch_size\
+            + (1 if len(new_timestamps) % batch_size != 0 else 0)
+
+    assert 0
+    # create a pool of processes
+    pool = mp.Pool(processes=n_processes)
+
+    # get batch data
+    batch_data = np.array([x1[start:end], y1[start:end]]).T
+
+    # apply sampling to each item in repeats
+    results = [
+        pool.apply_async(
+            _batch_interpolation,
+            args=(i*batch_size, min((i+1)*batch_size, len(x1)), x0, y0,
+                  values, x1, y1)) for i in range(n_batch)
+    ]
+    #results = pool.starmap(
+    #    _batch_interpolation,
+    #    [(i*batch_size, min((i+1)*batch_size, len(x1)), x0, y0,
+    #          values, x1, y1)] * n_processes,
+    #)
+
+    pool.close()
+    pool.join()
+
+    #interpolated = np.concatenate([result.get() for result in results])
+    interpolated = np.concatenate(results)
+
+    return interpolated
+
 
 # Function to process a single chunk
-def process_chunk(start, end, timestamps, trial_counts, values, new_timestamps, new_trial_counts):
-    new_points_chunk = np.array([new_timestamps[start:end], new_trial_counts[start:end]]).T
-
+def _batch_interpolation(start, end, x0, y0, values, x1, y1):
+    # TODO: jun 4th this func does NOT work!!!
     # Create a meshgrid for interpolation
-    timestamp_grid, trial_count_grid = np.meshgrid(timestamps, trial_counts)
+    x0_grid, y0_grid = np.meshgrid(x0, y0)
+    x1_grid, y1_grid = np.meshgrid(x1, y1)
+
+    new_points_chunk = np.array([x1[start:end], y1[start:end]]).T
 
     # Flatten the meshgrid and combine with values for griddata input
-    points = np.array([timestamp_grid.flatten(), trial_count_grid.flatten()]).T
-    values_grid = np.tile(values, (len(trial_counts), 1)).flatten()
+    points0 = np.array([x0_grid.flatten(), y0_grid.flatten()]).T
+    values_grid = np.tile(values, (len(y0), 1)).flatten()
 
-    # Interpolate values at new points chunk
-    interpolated_values_chunk = griddata(points, values_grid, new_points_chunk, method='linear')
+    # Interpolate values
+    interpolated = griddata(
+        points=points,
+        values=values_grid,
+        xi=points1,
+        method='nearest',
+    )
 
-    return interpolated_values_chunk
+    return interpolated
 
-# Calculate the number of chunks
-num_chunks = len(new_timestamps) // chunk_size + (1 if len(new_timestamps) % chunk_size != 0 else 0)
 
-# Use joblib to process chunks in parallel
-results = Parallel(n_jobs=-1)(delayed(process_chunk)(i * chunk_size, min((i + 1) * chunk_size, len(new_timestamps)),
-                                                    timestamps, trial_counts, values, new_timestamps, new_trial_counts)
-                              for i in range(num_chunks))
+def interpolate_1d(x, y, xnew, kind='nearest', dtype=float):
+    if y.ndim == 1:
+        if kind == 'cubic':
+            f = PchipInterpolator(
+                x=x,
+                y=y,
+            )
+        else:
+            # check if x is n-d array
+            f = interp1d(
+                x=x,
+                y=y,
+                kind=kind,
+                fill_value='extrapolate',
+            )
+        interpolated = f(xnew)
+    else:
+        interpolated = np.zeros((xnew.shape[0], y.shape[1]))
+        for i in range(y.shape[1]):
+            if kind == 'cubic':
+                f = PchipInterpolator(
+                    x=x,
+                    y=y[:, i],
+                )
+            else:
+                # check if x is n-d array
+                f = interp1d(
+                    x=x,
+                    y=y[:, i],
+                    kind=kind,
+                    fill_value='extrapolate',
+                )
+            interpolated[:, i] = f(xnew)
 
-# Combine the results into a single array
-interpolated_values = np.concatenate(results)
-
+    return interpolated.astype(dtype)
