@@ -29,7 +29,7 @@ def find_rois(abbr: str):
     }
 
 
-def get_hist_depths(hist_dir: str, mice: list, roi: list, dyes=["DiI"]: list):
+def get_hist_depths(hist_dir: str, mice: list, roi: list=None, dyes:list=["DiI"]):
     """
     get depth of each region from sharp-track histology results; depth zeros at the
     cortical surface.
@@ -63,7 +63,7 @@ def get_hist_depths(hist_dir: str, mice: list, roi: list, dyes=["DiI"]: list):
     hist_dir = file_utils.make_path(hist_dir)  # convert str into path
     mice_hist = []
 
-    tip_depths = np.zeros(len(mice) * len(dyes))
+    tip_depths = np.zeros((len(mice), len(dyes)))
     # top & bottom border of the region
     V1_borders = np.zeros((len(mice), 2))
     HPF_borders = np.zeros((len(mice), 2))
@@ -81,35 +81,37 @@ def get_hist_depths(hist_dir: str, mice: list, roi: list, dyes=["DiI"]: list):
 
         # step 2: load .mat file, save it as nparray, and get histology depth info
         # for each region
-        print(f">>> getting depth information of {mouse} from SHARP-Track results...\n")
-        depths = pd.read_csv(sorted(mouse_hist_dir.glob("*depths*"))[0])  # get depths file
-        assert 0
+        for d, dye in enumerate(dyes):
+            print(f">>> getting depth information of {mouse} from SHARP-Track results...\n")
+            depth_file = sorted(mouse_hist_dir.glob(f"*{dye}_depths*"))[0]
+            depths = pd.read_csv(depth_file)  # get depths file
 
-        tip_depths[m] = depths.iloc[:, 1].max()
+            tip_depths[m, d] = depths.iloc[:, 1].max()
 
-        # V1
-        print(f">>> getting V1 depth information of {mouse}...\n")
-        V1 = depths.iloc[np.where(depths.loc[:, "acronym"].str.contains("VIS"))]
-        V1_depths.append(V1)
+            # V1
+            print(f">>> getting V1 depth information of {mouse}...\n")
+            V1 = depths.iloc[np.where(depths.loc[:, "acronym"].str.contains("VIS"))]
+            V1_depths.append(V1)
 
-        # min and max depths, i.e., borders of V1
-        V1_borders[m] = np.array((V1.iloc[:, 0].min(), V1.iloc[:, 1].max()))
+            # min and max depths, i.e., borders of V1
+            V1_borders[m] = np.array((V1.iloc[:, 0].min(), V1.iloc[:, 1].max()))
 
-        # HPF
-        hpf = ["ProS", "CA", "DG", "FC", "IG"]  # hippocampal formation
-        print(f">>> getting HPF depth information of {mouse}...\n")
-        HPFs = depths.iloc[
-            np.where(
-                depths.loc[:, "acronym"].str.contains(r"\b{}.*".format("|".join(hpf)))
-            )
-        ]
-        HPF_depths.append(HPFs)
+            # HPF
+            hpf = ["ProS", "CA", "DG", "FC", "IG"]  # hippocampal formation
+            print(f">>> getting HPF depth information of {mouse}...\n")
+            HPFs = depths.iloc[
+                np.where(
+                    depths.loc[:, "acronym"].str.contains(r"\b{}.*".format("|".join(hpf)))
+                )
+            ]
+            HPF_depths.append(HPFs)
 
-        # min and max depths, i.e., borders of HPF
-        HPF_borders[m] = np.array((HPFs.iloc[:, 0].min(), HPFs.iloc[:, 1].max()))
+            # min and max depths, i.e., borders of HPF
+            HPF_borders[m] = np.array((HPFs.iloc[:, 0].min(), HPFs.iloc[:, 1].max()))
 
-        # print(f"\n For {mouse}, \n{V1_depths[m]} \n\n{HPF_depths[m]},\
-        # \n and probe depth is {tip_depths[m]}mm.")
+            # print(f"\n For {mouse}, \n{V1_depths[m]} \n\n{HPF_depths[m]},\
+            # \n and probe depth is {tip_depths[m]}mm.")
+
 
     return V1_depths, HPF_depths, V1_borders, HPF_borders, tip_depths
 
@@ -180,7 +182,7 @@ def get_depth_info(
 
     df: pd dataframe, same info as depths, just for quick visual inspection.
     """
-    depths = np.zeros((len(mice), num_selected_sessions // len(mice), 4))
+    depths = {}
     idx = []
 
     for m, mouse in enumerate(mice):
@@ -194,19 +196,10 @@ def get_depth_info(
                 raise PixelsError(f"have you corrected depth info of {name} yet?")
 
             # print(f"> getting depth information of {name}")
-            data = pd.read_json(
-                depth_info,
-                typ="series",
-            )
-            depths[m, i, :] = data.values
-            cols = data.index.values
+            data = file_utils.load_json(depth_info)
+            depths[name] = data
 
-    # TODO: add level to df, so the first level of the df is mouse id
-    df = pd.DataFrame(
-        data=depths.reshape((num_selected_sessions, 4)),
-        columns=cols,
-        index=idx,
-    )
+    df = pd.DataFrame(depths)
 
     return depths, df
 
