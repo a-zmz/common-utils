@@ -56,6 +56,7 @@ processed = "~/processed/"
 interim = "~/interim/"
 server_w = "~/w/arthur/"
 server_v = "~/v/arthur/"
+datastore = "~/datastore/arthur/"
 
 # meta
 oestrus_meta = "/home/amz/w/arthur/JSONs/"
