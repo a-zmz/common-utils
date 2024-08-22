@@ -59,21 +59,21 @@ server_v = "~/v/arthur/"
 datastore = "~/datastore/arthur/"
 
 # meta
-oestrus_meta = "/home/amz/w/arthur/JSONs/"
+oestrus_meta = "~/w/arthur/JSONs/"
 
 # histology
 #hist_dir = "/home/amz/rochefortlab/arthur/histology/" # raw & processed
 hist_dir = processed + "/histology/" # local processed
 
 # figures
-fig_dir = f"/home/amz/w/arthur/plots/"
-crap_fig_dir = f"/home/amz/Pictures/crappy_plots/"
+fig_dir = f"{datastore}plots/"
+crap_fig_dir = f"~/Pictures/crappy_plots/"
 # TODO jan 3 mice is not defined, how to preset prefix here?
 #fig_prefix = f"{time.strftime('%Y%m%d')}_{'_'.join(mice)}_"
 
 # testing
-test_data = "/home/amz/running_data/npx/"
-test_interim = "/home/amz/running_data/npx/interim/"
+test_data = "~/running_data/npx/"
+test_interim = "~/running_data/npx/interim/"
 
 '''
 misc
