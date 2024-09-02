@@ -56,3 +56,14 @@ def swap_columns(df, swap_from, swap_to):
 
     return df
 
+# Custom sorting function
+def sort_key(value):
+    # Convert to string (in case it's a number)
+    val_str = str(value)
+
+    # Split the numeric part and the suffix (if any)
+    if '_' in val_str:
+        base, suffix = val_str.split('_')
+        return (int(base), int(suffix))
+    else:
+        return (int(val_str), 0)
