@@ -23,7 +23,7 @@ def make_path(target_dir):
     return path
 
 
-def save_as_pickle(data, file_dir: str):
+def save_as_pickle(file_dir: str, data):
     """
     Save data as pickle.
     """
