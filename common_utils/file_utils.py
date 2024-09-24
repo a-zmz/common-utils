@@ -150,3 +150,52 @@ def sort_json_by_date(meta_dir: str, mice: list, output_dir: str = None) -> None
         if output_dir == None:
             output_dir = meta_dir
         write_json(meta, output_dir / f"{mouse}.json")
+
+
+def read_hdf5(path):
+    """
+    Read a dataframe from a h5 file.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Path to the h5 file to read.
+
+    Returns
+    -------
+    pandas.DataFrame : The dataframe stored within the hdf5 file under the name 'df'.
+
+    """
+    df = pd.read_hdf(
+        path_or_buf=path,
+        key='df',
+        index_col=None,
+    )
+    return df
+
+
+def write_hdf5(path, df):
+    """
+    Write a dataframe to an h5 file.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Path to the h5 file to write to.
+
+    df : pd.DataFrame
+        Dataframe to save to h5.
+
+    """
+    df.to_hdf(
+        path_or_buf=path,
+        key='df',
+        mode='w',
+        format='table',
+        index=False,
+    )
+    
+    print(f'\n>> HDF5 saved to {path}.')
+
+    return
+
