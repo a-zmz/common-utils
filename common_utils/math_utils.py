@@ -260,7 +260,7 @@ def fit_logistic(x, y, best_mid, num_max, normalised=False):
         # minima is 2cm after midpoint
         try:
             minima = x[mid_idx + 2]
-        except IndexError:
+        except (IndexError, KeyError):
             minima = x[mid_idx + 1]
     else:
         # highest acceleration
