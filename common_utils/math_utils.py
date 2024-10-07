@@ -4,6 +4,7 @@ This module contains math related helper functions to process data.
 import multiprocessing as mp
 import psutil
 
+import pandas as pd
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import linregress
@@ -231,10 +232,20 @@ def fit_logistic(x, y, best_mid, num_max, normalised=False):
     np array: [L, k, x_0, maxima, minima, d_mid], round up to 3 digits.
     """
     if not normalised:
-        # normalise y
-        norm_y = y / y.max()
-        # normalise x
-        norm_x = x / x.max()
+        if x.max() == 0:
+            if not isinstance(x, pd.Series):
+                x = pd.Series(x)
+                norm_x = x.value_counts(normalize=True).values
+        else:
+            norm_x = x / x.max()
+
+        if y.max() == 0:
+            if not isinstance(y, pd.Series):
+                y = pd.Series(y)
+                norm_y = y.value_counts(normalize=True).values
+        else:
+            norm_y = y / y.max()
+
     else:
         norm_y = y
         norm_x = x
