@@ -229,20 +229,25 @@ def fit_logistic(x, y, best_mid, num_max, normalised=False):
 
     return
     ===
-    np array: [L, k, x_0, maxima, minima, d_mid], round up to 3 digits.
+    np array: [k, x_0, maxima, minima, d_mid], round up to 3 digits.
     """
+    if x.size < 2 or y.size < 2:
+        print("> Not enough data points to fit logistics.")
+
+        return np.full(5, np.nan)
+
     if not normalised:
         if x.max() == 0:
             if not isinstance(x, pd.Series):
                 x = pd.Series(x)
-                norm_x = x.value_counts(normalize=True).values
+            norm_x = x.value_counts(normalize=True).values
         else:
             norm_x = x / x.max()
 
         if y.max() == 0:
             if not isinstance(y, pd.Series):
                 y = pd.Series(y)
-                norm_y = y.value_counts(normalize=True).values
+            norm_y = y.value_counts(normalize=True).values
         else:
             norm_y = y / y.max()
 
