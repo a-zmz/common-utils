@@ -32,9 +32,9 @@ vd_cohort_2 = [
     "WDAN04",
 ]
 vd_cohort_3 = [
+    "WDAN05",
+    "WDAN06",
     "WDAN07",
-    #"WDAN06",
-    #"WDAN05",
 ]
 vd_cohort_4 = [
     "VDCN01",
