@@ -3,7 +3,8 @@ Some plotting/styling utilities. Split out from base so it can be used with beha
 data plots too without the overhead of instantiating an Experiment.
 """
 import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import\
+        LinearSegmentedColormap, ListedColormap, BoundaryNorm
 from matplotlib.backends.backend_pdf import PdfPages
 
 
@@ -15,16 +16,38 @@ gray = "#999999" # gray
 
 # VR lick heatmap
 blue_yellow = ["#072651", "#977713", "#ca9f1a", "#fdc721"]
+# a more continuous colour map
 cm_heatmap = LinearSegmentedColormap.from_list("cm_heatmap", blue_yellow)
+bi_blue_yellow = ["#072651", "#fdc721"]
+# a binary colour map, only 0 and 1
+cm_bi_heatmap = ListedColormap(bi_blue_yellow)
+bi_norm = BoundaryNorm([0, 0.5, 1], cm_bi_heatmap.N)
 
 # VR behavour
 # blues = ["#2f83c6", "#86a4ba"] # darker, lighter
 #light_dark = ["#2f83c6", "#000000"] # blue, black
 
 # purple, black & gray for light, dark & chance level
+'''>>> vr behaviour colours'''
 light_dark = ["#7d2fc7", "#000000"] # purple, black
 lgt_orange = "#e2b28a" # light orange
 data_chance = ["#86a4ba", "#999999"] # light blue, gray
+# different light trial lengths, from short to long
+light_lengths = ["#7d2fc7", "#8A43CC", "#9758D2", "#A46DD7", "#B182DD",
+                 "#BE97E2"]
+cm_light = LinearSegmentedColormap.from_list("cm_light", light_lengths)
+dark_lengths = ["#02314d", "#1B455E", "#345A70", "#4D6E82", "#678394",
+                "#8097A6"]
+cm_dark = LinearSegmentedColormap.from_list("cm_dark", dark_lengths)
+chance_lengths = ["#4C4C4C", "#5B5B5B", "#6B6B6B", "#7A7A7A", "#898989",
+                  "#999999"]
+cm_chance = LinearSegmentedColormap.from_list("cm_chance", chance_lengths)
+cm_lengths = {
+    "light": cm_light,
+    "dark": cm_dark,
+    "chance": cm_chance,
+}
+'''vr behaviour colours<<<'''
 
 # regional & neuronal types
 '''>>> v1 oranges'''
