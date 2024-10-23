@@ -88,6 +88,26 @@ def get_subplots(nrows=1, ncols=2, figsize=(35, 15), sharex=True, sharey=True,
         figsize=figsize,
         sharex=sharex,
         sharey=sharey,
+        layout="constrained",
     )
 
     return fig, axes
+
+
+def plot_QQ(data):
+    """
+    Make Quantile-Quantile plot to check normality of data distribution. 
+
+    params
+    ===
+    data: np array like.
+
+    return
+    ===
+    fig
+    """
+    fig, ax = plt.subplot(figsize=(6, 6))
+
+    stats.probplot(data, dist="norm", plot=ax)
+
+    return fig
