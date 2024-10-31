@@ -10,6 +10,7 @@ import pickle
 import shutil
 
 import pandas as pd
+import numpy as np
 
 def make_path(target_dir):
     """
@@ -199,9 +200,20 @@ def write_hdf5(path, df):
 
     return
 
-def init_memmap(path, shape, dtype=float16):
+def init_memmap(path, shape, dtype=np.float16):
     """
     Initiate memory-map.
+
+    params
+    ===
+    path: str or Path instance, path to file.
+
+    shape: int or sequence of ints, shape or desired.
+
+    dtype: data-type.
+        Default: np.float16, to save some space
+
+    return: memory-map array.
     """
     # make path a Path instance
     path = file_utils.make_path(path)
