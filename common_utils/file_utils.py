@@ -199,3 +199,26 @@ def write_hdf5(path, df):
 
     return
 
+def init_memmap(path, shape, dtype=float16):
+    """
+    Initiate memory-map.
+    """
+    # make path a Path instance
+    path = file_utils.make_path(path)
+
+    if path.exists():
+        mmap = np.memmap(
+            filename=path,
+            dtype=dtype,
+            mode="r+",
+            shape=shape,
+        )
+    else:
+        mmap = np.memmap(
+            filename=path,
+            dtype=dtype,
+            mode='w+',
+            shape=shape,
+        )
+
+    return mmap
