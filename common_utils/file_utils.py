@@ -216,7 +216,7 @@ def init_memmap(path, shape, dtype=np.float16):
     return: memory-map array.
     """
     # make path a Path instance
-    path = file_utils.make_path(path)
+    path = make_path(path)
 
     if path.exists():
         mmap = np.memmap(
