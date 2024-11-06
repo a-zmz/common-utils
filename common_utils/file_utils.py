@@ -225,7 +225,7 @@ def init_memmap(path, shape, dtype=np.float32, overwrite=False, readonly=False):
     # make path a Path instance
     path = make_path(path)
 
-    if path.exists()
+    if path.exists():
         if readonly:
             mode="r"
             overwrite = False
