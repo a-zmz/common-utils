@@ -60,6 +60,8 @@ datastore = "~/datastore/arthur/data/"
 
 # meta
 oestrus_meta = "~/w/arthur/JSONs/"
+# generic/standard meta file for vr
+standard_vr_meta_dir = "/home/amz/interim/virmen_data/az_standard_meta.csv"
 
 # histology
 #hist_dir = "/home/amz/rochefortlab/arthur/histology/" # raw & processed
