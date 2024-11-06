@@ -200,7 +200,7 @@ def write_hdf5(path, df):
 
     return
 
-def init_memmap(path, shape, dtype=np.float16):
+def init_memmap(path, shape, dtype=np.float16, mode="r+"):
     """
     Initiate memory-map.
 
@@ -213,24 +213,27 @@ def init_memmap(path, shape, dtype=np.float16):
     dtype: data-type.
         Default: np.float16, to save some space
 
-    return: memory-map array.
+    mode: str, file open mode.
+
+    return
+    ===
+    memory-map array.
     """
     # make path a Path instance
     path = make_path(path)
 
     if path.exists():
-        mmap = np.memmap(
-            filename=path,
-            dtype=dtype,
-            mode="r+",
-            shape=shape,
-        )
+        # if it already exists, open for reading and/or writing
+        mode=mode
     else:
-        mmap = np.memmap(
-            filename=path,
-            dtype=dtype,
-            mode='w+',
-            shape=shape,
-        )
+        # if not, create and overwrite
+        mode="w+"
+
+    mmap = np.memmap(
+        filename=path,
+        dtype=dtype,
+        mode=mode,
+        shape=shape,
+    )
 
     return mmap
