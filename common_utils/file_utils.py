@@ -194,6 +194,8 @@ def write_hdf5(path, df):
         mode='w',
         format='table',
         index=False,
+        complevel=9,
+        complib="blosc:lz4hc",
     )
     
     print(f'\n>> HDF5 saved to {path}.')
