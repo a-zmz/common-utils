@@ -7,7 +7,7 @@ import psutil
 import pandas as pd
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import linregress
+from scipy.stats import linregress, norm
 from scipy.interpolate import interp1d, PchipInterpolator
 import sympy as sp
 
@@ -535,3 +535,31 @@ def interpolate_1d(x, y, xnew, kind='nearest', dtype=float):
             interpolated[:, i] = f(xnew)
 
     return interpolated.astype(dtype)
+
+def log_likelihood(data, x):
+    """
+    Get log likelihood of the observation x in given data.
+
+    NOTE: likelihood is NOT probability!
+    Likelihood reflects relative plausibility the parameters given x, i.e., 
+    L(theta|x_0, x_1, ..., x_n); while probability is the probability of
+    observing x given the parameters, i.e., P(x|theta).
+
+    params
+    ===
+    data: np array, use to infer std and mean of data.
+
+    x: float or int, observation.
+    """
+    # get standard deviation
+    sigma = np.std(data)
+    # get mean
+    mu = np.mean(data)
+    # get log likelihood L from log pdf
+    log_L = norm.logpdf(
+        x=x,
+        loc=mu,
+        scale=sigma,
+    )
+
+    return log_L
