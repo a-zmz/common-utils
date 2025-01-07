@@ -20,7 +20,7 @@ from analysis.base import fig_dir
 from common_utils import plot_utils
 
 #@vectorize(["int16"("int16")], target="cuda")
-def screeplot(data) -> None:
+def screeplot(data, name) -> None:
     """
     determine number of clusters by making screeplot.
 
@@ -66,8 +66,8 @@ def _compute_silhouette(n_clusters, data):
 
     return score
 
-def get_silhouette(data):
-    n_clusters = range(2, 6)
+def get_silhouette(data, name):
+    n_clusters = range(2, 10)
 
     n_processes = mp.cpu_count() - 2
     pool = mp.Pool(n_processes)
