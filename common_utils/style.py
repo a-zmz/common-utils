@@ -20,9 +20,9 @@ pd.set_option(
 '''<<< pandas display setting'''
 
 '''>>> plt setting'''
-import matplotlib 
+#import matplotlib 
 # use At5Agg for better wayland support
-matplotlib.use('Qt5Agg')
+#matplotlib.use('Qt5Agg')
 # plot display
 sns.set_context("paper")
 #plt.tight_layout()
