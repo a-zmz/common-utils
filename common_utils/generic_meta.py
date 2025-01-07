@@ -57,7 +57,7 @@ interim = "~/interim/"
 running = "~/running_data/"
 server_w = "~/w/arthur/"
 server_v = "~/v/arthur/"
-datastore = "~/datastore/arthur/data/"
+datastore = "~/datastore/arthur/"
 
 # meta
 oestrus_meta = "~/w/arthur/JSONs/"
