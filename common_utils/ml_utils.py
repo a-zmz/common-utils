@@ -31,7 +31,7 @@ def screeplot(data, name) -> None:
         x-axis(1): features/variables/datapoints, e.g., datapoints in time
     """
     iners = [] # sum of squared distance of samples to their closest cluster centre
-    ks = range(1, 10)
+    ks = range(2, 10)
     for k in ks:
         km_clf = KMeans(
             n_clusters=k,
