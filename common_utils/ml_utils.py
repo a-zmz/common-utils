@@ -118,6 +118,9 @@ def k_means_clustering(data, name, n_clusters=None, repeats=1000) -> list:
         x-axis(1): features/variables/datapoints, e.g., datapoints in time
 
     """
+    if n_clusters == None:
+        _, n_clusters = get_silhouette(data, name)
+
     km_clf = KMeans(
         n_clusters=n_clusters,
         init="k-means++",#TODO: use default "k-means++" as its faster?
