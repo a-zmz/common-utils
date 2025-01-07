@@ -84,11 +84,26 @@ def get_silhouette(data, name):
     pool.close()
     pool.join()
 
-    return silhouette_scores
+    sns.lineplot(
+        x=n_clusters,
+        y=silhouette_scores,
+    )
+    plt.xlabel("Number of Clusters")
+    plt.ylabel("Silhouette Scores")
+    plot_utils.save(path=fig_dir + name + "_silhouette_scores.pdf")
+
+    optimal_k = list(n_clusters)[
+        silhouette_scores.index(max(silhouette_scores))
+    ]
+
+    print(f"Optimal number of clusters according to silhouette scores: "
+        f"{optimal_k}")
+
+    return silhouette_scores, optimal_k
 
 
 #@cuda.jit(device=True)
-def k_means_clustering(n_clusters:int, data, repeats=1000) -> list:
+def k_means_clustering(data, name, n_clusters=None, repeats=1000) -> list:
     #TODO: use GPU to conduct ml computations using joblib
     """
     Use k-means to cluster channels
