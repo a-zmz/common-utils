@@ -42,19 +42,23 @@ def screeplot(data, name) -> None:
         iner = km_clf.inertia_
         iners.append(iner)
 
-    RandomizedSearchCV(kmeans, param_distributions=param_dist, n_iter=10,
-                       n_jobs=-1, cv=3, verbose=1, random_state=0)
+    from kneed import KneeLocator
+    kn = KneeLocator(
+        ks,
+        iners,
+        curve="convex", 
+        direction="decreasing",
+    )
+    elbow_point = kn.knee
+    print(f"Optimal number of clusters according to elbow method: {elbow_point}")
 
-    #TODO: use np.diff.argmin to find the elbow in inertia numerically so it can be
-    # used later
     sns.lineplot(
         x=ks,
         y=iners,
     )
     plt.xlabel("Number of Clusters")
     plt.ylabel("Sum of Squares")
-    #plt.show()
-    utils.save(path=fig_dir + "screeplot_final.pdf")
+    plot_utils.save(path=fig_dir + name + "_screeplot.pdf")
 
     return None
 
