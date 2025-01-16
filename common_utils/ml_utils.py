@@ -35,6 +35,7 @@ def screeplot(data, name) -> None:
     for k in ks:
         km_clf = KMeans(
             n_clusters=k,
+            init="random",
         )
         km = km_clf.fit(
             X=data,
@@ -123,7 +124,8 @@ def k_means_clustering(data, name, n_clusters=None, repeats=1000) -> list:
 
     km_clf = KMeans(
         n_clusters=n_clusters,
-        init="k-means++",#TODO: use default "k-means++" as its faster?
+        init="random",
+        #init="k-means++",#TODO: use default "k-means++" as its faster?
         n_init=repeats,
         #random_state=repeats, # make randomness deterministic, i.e., reproducible
         algorithm="lloyd",
