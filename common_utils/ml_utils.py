@@ -65,25 +65,21 @@ def screeplot(data, name) -> None:
 
 
 def _compute_silhouette(n_clusters, data):
-    kmeans = KMeans(n_clusters=n_clusters)
-    kmeans.fit(data)
-    score = silhouette_score(data, kmeans.labels_)
+    kmeans = KMeans(n_clusters=n_clusters, init="random")
+    labels = kmeans.fit_predict(data)
+    score = silhouette_score(data, labels)
 
     return score
 
 def get_silhouette(data, name):
     n_clusters = range(2, 10)
 
-    n_processes = mp.cpu_count() - 2
-    pool = mp.Pool(n_processes)
+    from joblib import Parallel, delayed
+    n_jobs = -2 # use all cpu cores but 2
 
-    silhouette_scores = pool.starmap(
-        _compute_silhouette,
-        [(n, data) for n in n_clusters],
+    silhouette_scores = Parallel(n_jobs=n_jobs)(
+        delayed(_compute_silhouette)(n, data) for n in n_clusters
     )
-
-    pool.close()
-    pool.join()
 
     sns.lineplot(
         x=n_clusters,
@@ -93,7 +89,7 @@ def get_silhouette(data, name):
     plt.ylabel("Silhouette Scores")
     plot_utils.save(path=fig_dir + name + "_silhouette_scores.pdf")
 
-    optimal_k = list(n_clusters)[
+    optimal_k = n_clusters[
         silhouette_scores.index(max(silhouette_scores))
     ]
 
