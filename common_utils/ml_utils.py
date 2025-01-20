@@ -16,11 +16,10 @@ import multiprocessing as mp
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from analysis.base import fig_dir
 from common_utils import plot_utils
 
 #@vectorize(["int16"("int16")], target="cuda")
-def screeplot(data, name) -> None:
+def screeplot(data, fig_dir) -> None:
     """
     determine number of clusters by making screeplot.
 
@@ -59,7 +58,7 @@ def screeplot(data, name) -> None:
     )
     plt.xlabel("Number of Clusters")
     plt.ylabel("Sum of Squares")
-    plot_utils.save(path=fig_dir + name + "_screeplot.pdf")
+    plot_utils.save(path=fig_dir + "_screeplot.pdf")
 
     return None
 
@@ -71,7 +70,7 @@ def _compute_silhouette(n_clusters, data):
 
     return score
 
-def get_silhouette(data, name):
+def get_silhouette(data, fig_dir):
     n_clusters = range(2, 10)
 
     from joblib import Parallel, delayed
@@ -87,7 +86,7 @@ def get_silhouette(data, name):
     )
     plt.xlabel("Number of Clusters")
     plt.ylabel("Silhouette Scores")
-    plot_utils.save(path=fig_dir + name + "_silhouette_scores.pdf")
+    plot_utils.save(path=fig_dir + "_silhouette_scores.pdf")
 
     optimal_k = n_clusters[
         silhouette_scores.index(max(silhouette_scores))
@@ -100,7 +99,7 @@ def get_silhouette(data, name):
 
 
 #@cuda.jit(device=True)
-def k_means_clustering(data, name, n_clusters=None, repeats=1000) -> list:
+def k_means_clustering(data, fig_dir, n_clusters=None, repeats=1000) -> list:
     #TODO: use GPU to conduct ml computations using joblib
     """
     Use k-means to cluster channels
@@ -116,7 +115,7 @@ def k_means_clustering(data, name, n_clusters=None, repeats=1000) -> list:
 
     """
     if n_clusters == None:
-        _, n_clusters = get_silhouette(data, name)
+        _, n_clusters = get_silhouette(data, fig_dir)
 
     km_clf = KMeans(
         n_clusters=n_clusters,
