@@ -68,7 +68,7 @@ def save(path, fig=None, nosize=False):
             pdf.savefig(figure=fig, bbox_inches='tight', dpi=300)
 
     else:
-        fig.savefig(path, dpi=1200)
+        fig.savefig(path, dpi=600)
 
     if len(path.parts) > 3:
         path = "/".join(path.parts[-3:])
