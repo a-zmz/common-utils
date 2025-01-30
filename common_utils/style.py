@@ -24,7 +24,9 @@ pd.set_option(
 # use At5Agg for better wayland support
 #matplotlib.use('Qt5Agg')
 # plot display
-sns.set_context("paper")
+sns.set_theme(
+    style="darkgrid", # "ticks" without background
+    context="talk",
+    font_scale=0.7, # 1.2 0.7 0.3
+)
 #plt.tight_layout()
-sns.set(font_scale=2) # 1.2 0.7 0.3
-sns.set_style("ticks")
