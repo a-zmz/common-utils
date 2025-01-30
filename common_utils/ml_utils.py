@@ -102,52 +102,31 @@ def find_optimal_k(data, fig_dir) -> float:
     sns.lineplot(
         x=ks,
         y=iners,
+        ax=axes[0],
+        marker="o",
     )
-    plt.xlabel("Number of Clusters")
-    plt.ylabel("Sum of Squares")
-    plot_utils.save(path=fig_dir + "_screeplot.pdf")
-
-    return None
-
-
-def _compute_silhouette(n_clusters, data):
-    kmeans = KMeans(n_clusters=n_clusters, init="random")
-    labels = kmeans.fit_predict(data)
-    score = silhouette_score(data, labels)
-
-    return score
-
-def get_silhouette(data, fig_dir):
-    n_clusters = range(2, 10)
-
-    from joblib import Parallel, delayed
-    n_jobs = -2 # use all cpu cores but 2
-
-    silhouette_scores = Parallel(n_jobs=n_jobs)(
-        delayed(_compute_silhouette)(n, data) for n in n_clusters
-    )
+    axes[0].set_xlabel("Number of Clusters")
+    axes[0].set_ylabel("Sum of Squares")
 
     sns.lineplot(
-        x=n_clusters,
-        y=silhouette_scores,
+        x=ks,
+        y=sil_scores,
+        ax=axes[1],
+        marker="o",
     )
-    plt.xlabel("Number of Clusters")
-    plt.ylabel("Silhouette Scores")
-    plot_utils.save(path=fig_dir + "_silhouette_scores.pdf")
+    axes[1].set_xlabel("Number of Clusters")
+    axes[1].set_ylabel("Silhouette Scores")
+    plot_utils.save(path=fig_dir + "_inertia_sil_scores.pdf")
 
-    optimal_k = n_clusters[
-        silhouette_scores.index(max(silhouette_scores))
-    ]
+    optimal_k = ks[sil_scores.index(max(sil_scores))]
 
     print(f"Optimal number of clusters according to silhouette scores: "
         f"{optimal_k}")
 
-    return silhouette_scores, optimal_k
+    return optimal_k
 
 
-#@cuda.jit(device=True)
 def k_means_clustering(data, fig_dir, n_clusters=None, repeats=1000) -> list:
-    #TODO: use GPU to conduct ml computations using joblib
     """
     Use k-means to cluster channels
     
