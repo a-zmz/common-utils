@@ -141,25 +141,17 @@ def k_means_clustering(data, fig_dir, n_clusters=None, repeats=1000) -> list:
 
     """
     if n_clusters == None:
-        _, n_clusters = get_silhouette(data, fig_dir)
+        n_clusters = find_optimal_k(data, fig_dir)
 
-    km_clf = KMeans(
+    print(f"\n> Do k-means clustering with k = {n_clusters}.")
+
+    km, labels = _fit_kmeans(
+        data=data,
         n_clusters=n_clusters,
-        init="random",
-        #init="k-means++",#TODO: use default "k-means++" as its faster?
         n_init=repeats,
-        #random_state=repeats, # make randomness deterministic, i.e., reproducible
-        algorithm="lloyd",
     )
-
-    km = km_clf.fit(
-        X=data, # no y label
-        sample_weight=None, # can pass array (n_samples, n_features) weight to
-    )
-
-    Y_pred = km.predict(
-        X=data,
-    )
+    # convert to cpu
+    Y_pred = cp.asnumpy(labels)
 
     print(f"\n> cluster_centers {km.cluster_centers_}")
     print(f"\n> num of iteration {km.n_iter_}")
