@@ -12,8 +12,132 @@ import numpy as np
 import pandas as pd
 import scipy.io as sio
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 from pixels.error import PixelsError
-from common_utils import file_utils
+from common_utils import file_utils, plot_utils
+
+
+def cluster_channels(rec, top_threshold):
+    """
+    Cluster top channels with k-means to determine the brain surface.
+
+    params
+    ===
+    rec: spikeinterface recording obj, first five minute of ap band signal.
+
+    top_threshold: int, depth along the probe for the top channels.
+
+    return
+    ===
+    clustered_channels: pd dataframe, channel info with k-means clustering
+        labels.
+    """
+    # get channel locations
+    chan_locs = rec.get_channel_locations()
+    # get top channels only
+    top_bool = chan_locs[:, 1] > top_threshold
+    # get channel ids, then use select_channels
+    chan_ids = rec.get_channel_ids()
+    top_chans = chan_ids[top_bool]
+    top_rec = rec.select_channels(top_chans)
+
+    # separate shanks
+    shanks = top_rec.split_by("group")
+    print(f"> get traces of {len(shanks)} shanks")
+
+    dfs = []
+    for s, shank in shanks.items():
+        # get channel traces
+        print(f"\n> get traces of shank {s}")
+        traces = shank.get_traces()
+
+        print(f"> clustering channels on shank {s} with k-means")
+        Y_pred = ml_utils.k_means_clustering(
+            data=traces.T,
+            fig_dir=fig_dir+name+f"_shank{s}",
+            #n_clusters=2,
+        )
+        # get channel locations
+        shank_chan_locs = shank.get_channel_locations()
+        df = pd.DataFrame(np.column_stack((shank_chan_locs, Y_pred)))
+        df.columns = ["x", "y", "cluster"]
+
+        # get noise level with MAD
+        noise_levels = si.get_noise_levels(shank)
+        df["noise_levels"] = noise_levels
+
+        dfs.append(df)
+
+    # concatenate shanks
+    clustered_channels = pd.concat(
+        dfs,
+        axis=1,
+        keys=shanks.keys(),
+        names=["shank", "vars"],
+    )
+
+    return clustered_channels
+
+
+def plot_clustered_channels(clustered_channels):
+    """
+    plot channel clusters after k-means.
+
+    params
+    ===
+    clustered_channels: pd dataframe, channel info with k-means clustering
+    labels.
+
+    return
+    ===
+    clus_fig: matplotlib figure obj, figure of channel geometry & label.
+
+    noise_fig: matplotlib figure obj, figure of channel depths vs noise, colour
+        coded by label.
+    """
+    shanks = clustered_channels.columns.levels[0]
+
+    noise_fig, noise_ax = plt.subplots(
+        ncols=len(shanks)//2,
+        nrows=2,
+        sharey=True,
+        sharex=True,
+    )
+    clus_fig, clus_ax = plt.subplots(
+        ncols=len(shanks)//2,
+        nrows=2,
+        sharey=True,
+        sharex=True,
+    )
+
+    for s, shank in enumerate(shanks):
+        df = clustered_channels[shank]
+
+        # flatten
+        clus_ax_flat = clus_ax.flatten()
+        noise_ax_flat = noise_ax.flatten()
+
+        # plot channel clusters
+        sns.scatterplot(
+            data=df,
+            x="x",
+            y="y",
+            hue="cluster",
+            ax=clus_ax_flat[s],
+        )
+
+        # plot channel clusters
+        sns.scatterplot(
+            data=df,
+            x="y",
+            y="noise_levels",
+            hue="cluster",
+            ax=noise_ax_flat[s],
+        )
+
+    return clus_fig, noise_fig
 
 
 def find_rois(abbr: str):
