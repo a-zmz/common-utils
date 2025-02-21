@@ -153,7 +153,7 @@ def k_means_clustering(data, fig_dir, n_clusters=None, repeats=1000) -> list:
     # convert to cpu
     Y_pred = cp.asnumpy(labels)
 
-    print(f"\n> cluster_centers {km.cluster_centers_}")
+    #print(f"\n> cluster_centers {km.cluster_centers_}")
     print(f"\n> num of iteration {km.n_iter_}")
 
     return Y_pred
