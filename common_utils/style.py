@@ -25,8 +25,9 @@ pd.set_option(
 #matplotlib.use('Qt5Agg')
 # plot display
 sns.set_theme(
-    style="darkgrid", # "ticks" without background
+    #style="darkgrid", # gray background with grid
+    style="ticks", # "ticks" without background
     context="talk",
     font_scale=0.7, # 1.2 0.7 0.3
 )
-#plt.tight_layout()
+plt.tight_layout()
