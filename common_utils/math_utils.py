@@ -34,30 +34,78 @@ def get_auc(y, x_lim, dx=1):
     # get auc
     return np.trapz(y[:x_lim], dx=dx)
 
-def _batch_sampling(rng, batch_size, array, size, axis):
 
-    return np.array(
-        [rng.choice(array, size=size, axis=axis)
-         for _ in range(batch_size)]
+def _batch_sampling(batch_size, a, size, axis):
+    """
+    Randomly sample batch.
+
+    params
+    ===
+    batch_size: int, number of items in a batch.
+
+    a: array like or int, sampling source.
+
+    size: int, number of samples to take.
+
+    axis: int, axis along which the selection is done.
+    
+    return
+    ===
+    samples: nd array, randomly selected samples, shape (batch_size, size).
+
+    """
+    sample = np.array(
+        [rng.choice(a, size=size, axis=axis) for _ in range(batch_size)]
     ).astype(int)
 
+    # sort sample
+    sample.sort()
 
-def random_sampling(array, size, axis=0, repeats=10000, n_processes=None):
-    # TODO for vr session level chance, i.e., randomly choose size from all
-    # number of wrong licks within a session, then use that size as the size
-    # here to create random samples 
+    return sample
+
+
+def random_sampling(a, size, axis=0, repeats=10000, n_processes=None):
+    """
+    Repeatedly randomly sample from a given array, or np.arange(a).
+
+    params
+    ===
+    a: array like or int, sampling source.
+
+    size: int, number of samples to take.
+
+    axis: int, axis along which the selection is done.
+    
+    repeats: int, number of repeat.
+
+    n_processes: int, number of cpu cores to use.
+
+    return
+    ===
+    samples: nd array, randomly selected samples, shape (repeats, size).
+    """
 
     # define number of processes
     n_processes = n_processes or mp.cpu_count() - 2
 
     # get batch size in each process
-    batch_size = repeats // n_processes
+    base_batch = repeats // n_processes
+    remainder = repeats % n_processes
+    # create tasks
+    tasks = []
+    if remainder > 0:
+        for i in range(n_processes):
+            # Distribute remainder: first 'remainder' processes get an extra sample.
+            batch_size = base_batch + (1 if i < remainder else 0)
+            # Use i as a seed to differentiate RNG instances
+            tasks.append((batch_size, a, size, axis))
+
     # create a pool of processes
     pool = mp.Pool(processes=n_processes)
     # apply sampling to each item in repeats
     results = pool.starmap(
         _batch_sampling,
-        [(rng, batch_size, array, size, axis)] * n_processes,
+        tasks,
     )
 
     # stop adding task to pool
