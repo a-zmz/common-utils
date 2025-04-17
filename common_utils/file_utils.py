@@ -4,6 +4,7 @@ This contains utility functions to handle files.
 import os
 import operator
 import json
+import yaml
 import tempfile
 from pathlib import Path
 import pickle
@@ -261,3 +262,21 @@ def init_memmap(path, shape, dtype=np.float32, overwrite=False, readonly=False):
     )
 
     return mmap
+
+
+def save_yaml(path, data):
+
+    yaml.dump(data, open(path, "w"), indent=4)
+
+    print(f"\n>> yaml saved to {path}.")
+
+    return None
+
+
+def load_yaml(path):
+
+    values = yaml.load(open(path, "r"), Loader=yaml.Loader)
+
+    print(f"\n>> {path} loaded.")
+
+    return values
