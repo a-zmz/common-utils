@@ -213,7 +213,7 @@ def write_hdf5(path, df, key="df", mode="w"):
 
     return
 
-def init_memmap(path, shape, dtype=np.float32, overwrite=False, readonly=False):
+def init_memmap(path, dtype=np.float32, shape=None, overwrite=False, readonly=False):
     """
     Initiate memory-map.
 
