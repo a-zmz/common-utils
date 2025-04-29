@@ -65,8 +65,8 @@ oestrus_meta = "~/w/arthur/JSONs/"
 standard_vr_meta_dir = "/home/amz/interim/virmen_data/az_standard_meta.csv"
 
 # histology
-#hist_dir = "/home/amz/rochefortlab/arthur/histology/" # raw & processed
-hist_dir = processed + "/histology/" # local processed
+#hist_dir = "/home/amz/datastore/arthur/data/histology/" # raw & processed
+vd_hist_dir = processed + "histology/vision-in-darkness/" # local processed
 
 # figures
 fig_dir = f"{datastore}plots/"
