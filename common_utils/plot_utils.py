@@ -111,3 +111,27 @@ def plot_QQ(data):
     stats.probplot(data, dist="norm", plot=ax)
 
     return fig
+
+def make_fixed_subplots(nrows, ncols,
+                        subplot_w=10,   # inches
+                        subplot_h=5,   # inches
+                        wpad=2,        # horizontal padding between subplots (inches)
+                        hpad=2,        # vertical padding
+                        margin_lr=2,   # left+right margin
+                        margin_tb=2,   # top+bottom margin
+                        **kwargs):
+    fig_w = ncols * subplot_w + (ncols - 1) * wpad + 2 * margin_lr
+    fig_h = nrows * subplot_h + (nrows - 1) * hpad + 2 * margin_tb
+    fig, axes = plt.subplots(nrows, ncols,
+                             figsize=(fig_w, fig_h),
+                             **kwargs)
+    # Optionally tweak spacing to match wpad/hpad exactly
+    fig.subplots_adjust(
+        left=margin_lr/fig_w,
+        right=1-margin_lr/fig_w,
+        bottom=margin_tb/fig_h,
+        top=1-margin_tb/fig_h,
+        wspace=wpad/subplot_w,
+        hspace=hpad/subplot_h,
+    )
+    return fig, axes
