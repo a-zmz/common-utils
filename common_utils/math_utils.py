@@ -611,3 +611,15 @@ def log_likelihood(data, x):
     )
 
     return log_L
+
+
+def group_and_aggregate(df, group_key, how, columns=None):
+    if columns:
+        grouped = df.groupby(group_key)[columns]
+    else:
+        grouped = df.groupby(group_key)
+
+    # find the needed attribute of groupby
+    agg_method = getattr(grouped, how)
+
+    return agg_method()
