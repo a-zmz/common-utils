@@ -85,4 +85,9 @@ regional_cell_type = {
     "HPF": HPF,
     "Unidentified": gray,
 }
-# <<< plt setting
+
+# >>> snake plot colours >>>
+# colour hex `into the void`
+snake_colours = ["#001931", "#00164f", "#033476", "#2b529b", "#b80000"]
+cm_snake = ListedColormap(snake_colours)
+# <<< snake plot colours <<<
