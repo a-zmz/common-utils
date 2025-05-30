@@ -9,6 +9,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import linregress, norm
 from scipy.interpolate import interp1d, PchipInterpolator
+from scipy.signal import periodogram
 import sympy as sp
 
 # initiate random number generator
@@ -623,3 +624,42 @@ def group_and_aggregate(df, group_key, how, columns=None):
     agg_method = getattr(grouped, how)
 
     return agg_method()
+
+
+
+
+def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density"):
+    """
+    Estimate power spectrum or spectral density using periodogram.
+
+    params
+    ===
+    x: array like, time series or similar sequence of measurement values, in
+        unit of spike/second (Hz).
+
+    fs: float, sampling frequency of x, in unit of sample / cycle. this "cycle"
+        could be spike/second (Hz, in temporal domain), or sample/centimetre (in
+        spatial domain).
+
+
+    axis: int, axis along which the periodogram is computed.
+        Default: -1
+
+    scaling: str, scaling method of power spectrum.
+        if "density", psx unit would be (sample/cycle)^2
+
+    return
+    ===
+    sample_freqs: array of sample frequencies.
+
+    psx: power spectrum or spectral density (in unit of Hz^2/cm).
+    """
+    sample_freqs, psx = periodogram(
+        x=x,
+        fs=fs,
+        window="hann",
+        scaling=scaling,
+        axis=axis,
+    )
+
+    return sample_freqs, psx
