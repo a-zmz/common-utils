@@ -626,6 +626,49 @@ def group_and_aggregate(df, group_key, how, columns=None):
     return agg_method()
 
 
+def kendalls_w(ranks) -> float:
+    """
+    Compute Kendall’s W (coefficient of concordance) for *m* raters
+    ranking *n* items.
+    params
+    ===
+    ranks: pandas df or np array, shape (n_items, m_raters), each column is a
+        COMPLETE ranking of the same n_items, from 0…n-1 (or 1…n, doesn’t matter so
+        long as it’s consecutive integers).
+    return
+    ===
+    W: float, between [0, 1].
+    """
+    if isinstance(ranks, pd.DataFrame):
+        R = ranks.values.astype(float)
+    elif isinstance(ranks, np.array):
+        assert 0
+        R = ranks
+
+    n, m = R.shape
+    # sum of ranks for each item across all raters
+    sum_r = np.sum(R, axis=1)
+    # the “mean total rank” if rater‐agreement were perfect
+    R_bar = m * (n - 1) / 2.0
+    # S = ∑ (R_i – R̄)²
+    S = np.sum((sum_r - R_bar)**2)
+    # denominator: m² (n³ – n) / 12
+    W = (12 * S) / (m ** 2 * (n ** 3 - n))
+
+    return W
+
+
+def kendalls_w_test(ranks):
+    """
+    Returns (W, chi2_stat, df, p_value) testing H0: W=0 versus W>0
+    by the chi‐square approximation.
+    """
+    W = kendalls_w(rank_df)
+    n, m = rank_df.shape
+    chi2_stat = m * (n - 1) * W
+    df = n - 1
+    pval = 1 - chi2.cdf(chi2_stat, df)
+    return W, chi2_stat, df, pval
 
 
 def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density"):
