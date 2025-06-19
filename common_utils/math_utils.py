@@ -9,7 +9,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import linregress, norm
 from scipy.interpolate import interp1d, PchipInterpolator
-from scipy.signal import periodogram
+from scipy.signal import periodogram, welch
 import sympy as sp
 
 # initiate random number generator
@@ -671,7 +671,8 @@ def kendalls_w_test(ranks):
     return W, chi2_stat, df, pval
 
 
-def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density"):
+def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density",
+                            use_welch=True):
     """
     Estimate power spectrum or spectral density using periodogram.
 
@@ -691,18 +692,34 @@ def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density"):
     scaling: str, scaling method of power spectrum.
         if "density", psx unit would be (sample/cycle)^2
 
+    use_welch: bool, use welch or periodogram.
+        Default: True, it gives smoother, low variance estimate of the psd.
+
     return
     ===
     sample_freqs: array of sample frequencies.
 
     psx: power spectrum or spectral density (in unit of Hz^2/cm).
     """
-    sample_freqs, psx = periodogram(
-        x=x,
-        fs=fs,
-        window="hann",
-        scaling=scaling,
-        axis=axis,
-    )
+    if use_welch:
+        sample_freqs, psx = welch(
+            x=x,
+            fs=fs,
+            window="hann",
+            scaling=scaling,
+            return_onesided=True,
+            detrend="linear",
+            axis=axis,
+            average="median",
+        )
+    else:
+        sample_freqs, psx = periodogram(
+            x=x,
+            fs=fs,
+            window="hann",
+            scaling=scaling,
+            detrend="linear",
+            axis=axis,
+        )
 
     return sample_freqs, psx
