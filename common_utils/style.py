@@ -3,6 +3,7 @@ Styling utilities, for reproducible, consistent, and easy-to-manage display.
 """
 
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 import seaborn as sns
 import pandas as pd
@@ -20,14 +21,26 @@ pd.set_option(
 '''<<< pandas display setting'''
 
 '''>>> plt setting'''
-#import matplotlib 
-# use At5Agg for better wayland support
-#matplotlib.use('Qt5Agg')
-# plot display
-sns.set_theme(
+#mpl.use('Qt5Agg') # for better wayland support
+#mpl.use('MACOSX') # for mac
+
+sns.set(
     #style="darkgrid", # gray background with grid
+    #style="whitegrid", # white background with grid
     style="ticks", # "ticks" without background
-    context="talk",
-    font_scale=0.7, # 1.2 0.7 0.3
+    context="poster",
+    #context="talk",
 )
+
+mpl.rcParams.update({
+    "font.size": 14,
+    #"font.family": ["Libertinus Sans"], # potentially for paper
+    "font.family": ["Latin Modern Sans"], # for thesis
+    #"font.family": ["Libertinus Serif"], # for poster
+    #"xtick.labelsize": 16,
+    #"ytick.labelsize": 16,
+    #"axes.labelsize": 16,
+    #"axes.titlesize": 18,
+})
+
 plt.tight_layout()
