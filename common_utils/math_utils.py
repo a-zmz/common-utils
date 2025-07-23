@@ -7,7 +7,7 @@ import psutil
 import pandas as pd
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import linregress, norm
+from scipy.stats import linregress, norm, anderson
 from scipy.interpolate import interp1d, PchipInterpolator
 from scipy.signal import periodogram, welch
 import sympy as sp
@@ -724,3 +724,26 @@ def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density",
         )
 
     return sample_freqs, psx
+
+
+def normality_check(df):
+    """
+    Normality check using Anderson-Darling test, robust against big sample size.
+
+    params
+    ===
+    df: pd dataframe, time x unit.
+    """
+    normality_check = []
+    for i in range(len(df.columns)):
+        results = anderson(df[df.columns[i]], dist="norm")
+        normality_check.append((results.statistic, results.fit_result.success))
+
+    normality = pd.DataFrame(
+        normality_check,
+        columns=["A2", "success"],
+        index=df.columns,
+    )
+    print("normality check:\n", normality)
+
+    return normality
