@@ -5,6 +5,8 @@ Styling utilities, for reproducible, consistent, and easy-to-manage display.
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
+import cmocean
+
 import seaborn as sns
 import pandas as pd
 
