@@ -46,7 +46,7 @@ class Subplots2D:
             self.axes_flat[i].set_visible(False)
 
 
-def save(path, fig=None, nosize=False):
+def save(path, fig=None, nosize=False, use_pdfpages=False):
     """
     Save a figure to the specified path. If a file extension is not part of the path
     name, it is saved as a PDF. The current figure is used, or a specified figure can be
@@ -63,12 +63,14 @@ def save(path, fig=None, nosize=False):
     if not path.suffix:
         path = path.with_suffix('.pdf')
 
-    if path.suffix == '.pdf':
-        with PdfPages(path) as pdf:
-            pdf.savefig(figure=fig, bbox_inches='tight', dpi=300)
 
+    if suffix == "pdf":
+        save_kwargs["dpi"] = 300
+    if suffix == "pdf" and use_pdfpages:
+        with PdfPages(path) as pdf:
+            pdf.savefig(fig, **save_kwargs)
     else:
-        fig.savefig(path, dpi=600)
+        fig.savefig(path, format=suffix, **save_kwargs)
 
     if len(path.parts) > 3:
         path = "/".join(path.parts[-3:])
