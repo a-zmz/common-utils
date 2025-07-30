@@ -85,7 +85,7 @@ def save(path, fig=None, nosize=False, use_pdfpages=False):
     print("Figure saved to: ", path)
 
     # close all open figures
-    plt.close("all")
+    plt.close(fig)
 
 
 # TODO nov 7 this essentially is the same as Subplots2D class...
