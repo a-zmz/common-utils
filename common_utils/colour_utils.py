@@ -5,8 +5,9 @@ data plots too without the overhead of instantiating an Experiment.
 import matplotlib.pyplot as plt
 from matplotlib.colors import\
         LinearSegmentedColormap, ListedColormap, BoundaryNorm
-from matplotlib.backends.backend_pdf import PdfPages
+import cmocean
 
+import numpy as np
 
 '''colour map'''
 # NOTE to use registered cmap, simply do cmap='for_heatmap'
@@ -91,3 +92,18 @@ regional_cell_type = {
 snake_colours = ["#001931", "#00164f", "#033476", "#2b529b", "#b80000"]
 cm_snake = ListedColormap(snake_colours)
 # <<< snake plot colours <<<
+
+# >>> z-score heatmap colours >>>
+# clip top & bottom colour of cmocean thermal or matplotlib cubehelix
+#base = plt.get_cmap("cmo.thermal") # better association with heat 
+base = plt.get_cmap("cubehelix") # better discrimination around 0
+clipped = base(np.linspace(0.1, 0.9, 256))
+cm_zscore = LinearSegmentedColormap.from_list("cm_zscore", clipped, N=256)
+# <<< z-score heatmap colours <<<
+
+# NOTE july 29 2025:
+# nice cmaps:
+"""
+cmap_names = ["cubehelix", "cmo.thermal_r_i", "cmo.oxy", "cmo.dense_i",
+"cmo.deep_i", "cmo.tempo_r", "cividis"]
+"""
