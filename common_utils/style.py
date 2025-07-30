@@ -39,10 +39,10 @@ mpl.rcParams.update({
     #"font.family": ["Libertinus Sans"], # potentially for paper
     "font.family": ["Latin Modern Sans"], # for thesis
     #"font.family": ["Libertinus Serif"], # for poster
-    #"xtick.labelsize": 16,
-    #"ytick.labelsize": 16,
-    #"axes.labelsize": 16,
-    #"axes.titlesize": 18,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "axes.labelsize": 16,
+    "axes.titlesize": 18,
 })
 
 plt.tight_layout()
