@@ -56,7 +56,8 @@ def _batch_sampling(batch_size, a, size, axis):
 
     """
     sample = np.array(
-        [rng.choice(a, size=size, axis=axis) for _ in range(batch_size)]
+        [rng.choice(a, size=size, replace=True, axis=axis)
+        for _ in range(batch_size)]
     ).astype(int)
 
     # sort sample
