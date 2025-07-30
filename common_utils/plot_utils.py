@@ -61,11 +61,19 @@ def save(path, fig=None, nosize=False, use_pdfpages=False):
         fig.set_size_inches(10, 10)
 
     if not path.suffix:
-        path = path.with_suffix('.pdf')
+        path = path.with_suffix(".svgz")
 
+    suffix = path.suffix.lower().lstrip(".")
+    save_kwargs = {
+        "bbox_inches": "tight",
+        "transparent": True,
+    }
 
     if suffix == "pdf":
         save_kwargs["dpi"] = 300
+    elif "svg" not in path.suffix:
+        save_kwargs["dpi"] = 600
+
     if suffix == "pdf" and use_pdfpages:
         with PdfPages(path) as pdf:
             pdf.savefig(fig, **save_kwargs)
