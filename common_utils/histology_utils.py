@@ -45,15 +45,15 @@ def cluster_channels(rec, top_threshold):
 
     # separate shanks
     shanks = top_rec.split_by("group")
-    print(f"> get traces of {len(shanks)} shanks")
+    logging.info(f"\n> getting traces from {len(shanks)} shanks")
 
     dfs = []
     for s, shank in shanks.items():
         # get channel traces
-        print(f"\n> get traces of shank {s}")
+        logging.info(f"\n> getting traces from shank no.{s}")
         traces = shank.get_traces()
 
-        print(f"> clustering channels on shank {s} with k-means")
+        logging.info(f"\n> clustering channels on shank {s} with k-means")
         Y_pred = ml_utils.k_means_clustering(
             data=traces.T,
             fig_dir=fig_dir+name+f"_shank{s}",
@@ -206,14 +206,17 @@ def get_hist_depths(hist_dir: str, mice: list, roi: list=None, dyes:list=["DiI"]
         # step 2: load .mat file, save it as nparray, and get histology depth info
         # for each region
         for d, dye in enumerate(dyes):
-            print(f">>> getting depth information of {mouse} from SHARP-Track results...\n")
+            logging.info(
+                f"\n>>> getting depth information of {mouse} "
+                f"from SHARP-Track results..."
+            )
             depth_file = sorted(mouse_hist_dir.glob(f"*{dye}_depths*"))[0]
             depths = pd.read_csv(depth_file)  # get depths file
 
             tip_depths[m, d] = depths.iloc[:, 1].max()
 
             # V1
-            print(f">>> getting V1 depth information of {mouse}...\n")
+            logging.info(f"\n>>> getting V1 depth information of {mouse}...")
             V1 = depths.iloc[np.where(depths.loc[:, "acronym"].str.contains("VIS"))]
             V1_depths.append(V1)
 
@@ -222,7 +225,7 @@ def get_hist_depths(hist_dir: str, mice: list, roi: list=None, dyes:list=["DiI"]
 
             # HPF
             hpf = ["ProS", "CA", "DG", "FC", "IG"]  # hippocampal formation
-            print(f">>> getting HPF depth information of {mouse}...\n")
+            logging.info(f"\n>>> getting HPF depth information of {mouse}...")
             HPFs = depths.iloc[
                 np.where(
                     depths.loc[:, "acronym"].str.contains(r"\b{}.*".format("|".join(hpf)))
@@ -233,7 +236,7 @@ def get_hist_depths(hist_dir: str, mice: list, roi: list=None, dyes:list=["DiI"]
             # min and max depths, i.e., borders of HPF
             HPF_borders[m] = np.array((HPFs.iloc[:, 0].min(), HPFs.iloc[:, 1].max()))
 
-            # print(f"\n For {mouse}, \n{V1_depths[m]} \n\n{HPF_depths[m]},\
+            # logging.info(f"\n For {mouse}, \n{V1_depths[m]} \n\n{HPF_depths[m]},\
             # \n and probe depth is {tip_depths[m]}mm.")
 
 
@@ -319,7 +322,7 @@ def get_depth_info(
             if depth_info == None:
                 raise PixelsError(f"have you corrected depth info of {name} yet?")
 
-            # print(f"> getting depth information of {name}")
+            # logging.info(f"\n> getting depth information of {name}")
             data = file_utils.load_json(depth_info)
             depths[name] = data
 
