@@ -646,7 +646,7 @@ def kendalls_w_test(ranks):
     return W, chi2_stat, df, pval
 
 
-def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density",
+def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density", t_seg=5,
                             use_welch=True):
     """
     Estimate power spectrum or spectral density using periodogram.
@@ -666,6 +666,9 @@ def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density",
 
     scaling: str, scaling method of power spectrum.
         if "density", psx unit would be (sample/cycle)^2
+
+    t_seg: int, duration of frequency segment.
+        Default: 5 seconds.
 
     use_welch: bool, use welch or periodogram.
         Default: True, it gives smoother, low variance estimate of the psd.
