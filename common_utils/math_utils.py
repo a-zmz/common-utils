@@ -55,13 +55,15 @@ def _batch_sampling(batch_size, a, size, axis):
     samples: nd array, randomly selected samples, shape (batch_size, size).
 
     """
+    rng = np.random.default_rng()
+
     sample = np.array(
         [rng.choice(a, size=size, replace=True, axis=axis)
         for _ in range(batch_size)]
     ).astype(int)
 
     # sort sample
-    sample.sort()
+    #sample.sort()
 
     return sample
 
