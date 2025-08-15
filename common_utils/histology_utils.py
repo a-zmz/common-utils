@@ -16,11 +16,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from pixels.error import PixelsError
-from common_utils import file_utils, plot_utils
+from common_utils import file_utils, plot_utils, ml_utils
+from common_utils.style import *
 from common_utils.si_configs import *
 
 
-def cluster_channels(rec, top_threshold):
+def cluster_channels(rec, top_threshold, fig_dir):
     """
     Cluster top channels with k-means to determine the brain surface.
 
@@ -59,8 +60,8 @@ def cluster_channels(rec, top_threshold):
         logging.info(f"\n> clustering channels on shank {s} with k-means")
         Y_pred = ml_utils.k_means_clustering(
             data=traces.T,
-            fig_dir=fig_dir+name+f"_shank{s}",
             #n_clusters=2,
+            fig_dir=fig_dir+f"_shank{s}",
         )
         # get channel locations
         shank_chan_locs = shank.get_channel_locations()
