@@ -13,6 +13,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 from common_utils import plot_utils
+from common_utils.style import *
 
 def _fit_kmeans(data, n_clusters, n_init=100):
     """
@@ -81,11 +82,11 @@ def find_optimal_k(data, fig_dir) -> float:
     iners = []
     sil_scores = []
 
-    print("> transfer data to gpu")
+    logging.info("\n> transfer data to gpu")
     gpu_data = cp.asarray(data)
 
     for k in ks:
-        print(f"> get k-means metrics with {k} clusters")
+        logging.info(f"\n> get k-means metrics with {k} clusters")
         iner, sil_score = compute_metrics(gpu_data, k)
         iners.append(iner)
         sil_scores.append(sil_score)
@@ -103,7 +104,8 @@ def find_optimal_k(data, fig_dir) -> float:
         direction="decreasing",
     )
     elbow_point = kn.knee
-    print(f"Optimal number of clusters according to elbow method: {elbow_point}")
+    logging.info(f"\nOptimal number of clusters according to elbow method: "
+                f"{elbow_point}")
 
     sns.lineplot(
         x=ks,
@@ -126,8 +128,8 @@ def find_optimal_k(data, fig_dir) -> float:
 
     optimal_k = ks[sil_scores.index(max(sil_scores))]
 
-    print(f"Optimal number of clusters according to silhouette scores: "
-        f"{optimal_k}")
+    logging.info(f"\nOptimal number of clusters according to "
+                f"silhouette scores: {optimal_k}")
 
     return optimal_k
 
@@ -149,21 +151,20 @@ def k_means_clustering(data, fig_dir, n_clusters=None, repeats=1000) -> list:
     if n_clusters == None:
         n_clusters = find_optimal_k(data, fig_dir)
 
-    print(f"\n> Do k-means clustering with k = {n_clusters}.")
+    logging.info(f"\n> Do k-means clustering with k = {n_clusters}.")
 
     km, labels = _fit_kmeans(
         data=data,
         n_clusters=n_clusters,
         n_init=repeats,
     )
+    #logging.info(f"\n> cluster_centers {km.cluster_centers_}")
+    logging.info(f"\n> num of iteration {km.n_iter_}")
     # tear down model to free gpu memory
     del km
     gc.collect()
 
     # convert to cpu
     Y_pred = cp.asnumpy(labels)
-
-    #print(f"\n> cluster_centers {km.cluster_centers_}")
-    print(f"\n> num of iteration {km.n_iter_}")
 
     return Y_pred

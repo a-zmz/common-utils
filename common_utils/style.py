@@ -1,6 +1,7 @@
 """
 Styling utilities, for reproducible, consistent, and easy-to-manage display.
 """
+import logging
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -46,3 +47,18 @@ mpl.rcParams.update({
 })
 
 plt.tight_layout()
+'''<<< plt setting'''
+
+'''>>> logging setting'''
+# Configure logging to include a timestamp with seconds
+logging.basicConfig(
+    level=logging.INFO,
+    format='''\n%(asctime)s %(levelname)s: %(message)s\
+            \n[in %(filename)s:%(lineno)d]''',
+    datefmt='%Y%m%d %H:%M:%S',
+)
+
+#logging.info('This is an info message.')
+#logging.warning('This is a warning message.')
+#logging.error('This is an error message.')
+'''<<< logging setting'''

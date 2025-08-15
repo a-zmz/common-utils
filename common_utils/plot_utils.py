@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
 from common_utils.file_utils import make_path
+from common_utils.style import *
 
 
 class Subplots2D:
@@ -82,7 +83,7 @@ def save(path, fig=None, nosize=False, use_pdfpages=False):
 
     if len(path.parts) > 3:
         path = "/".join(path.parts[-3:])
-    print("Figure saved to: ", path)
+    logging.info(f"Figure saved to: {path}")
 
     # close all open figures
     plt.close(fig)
