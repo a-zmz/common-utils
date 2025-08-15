@@ -3,6 +3,8 @@ This script contains helper functions for machine learning, including pre-analys
 steps e.g., using screeplot and silhouette score to determine number of cluster
 for k-means.
 """
+import gc
+
 import cupy as cp
 from cuml.cluster import KMeans
 from cuml.metrics.cluster import silhouette_score
@@ -46,6 +48,10 @@ def compute_metrics(data, n_clusters, n_init=100):
 
     # get inertia
     inertia = km.inertia_
+    # tear down model to free gpu memory
+    del km
+    gc.collect()
+
     # get silhouette_score
     sil_score = silhouette_score(data, labels)
 
@@ -150,6 +156,10 @@ def k_means_clustering(data, fig_dir, n_clusters=None, repeats=1000) -> list:
         n_clusters=n_clusters,
         n_init=repeats,
     )
+    # tear down model to free gpu memory
+    del km
+    gc.collect()
+
     # convert to cpu
     Y_pred = cp.asnumpy(labels)
 
