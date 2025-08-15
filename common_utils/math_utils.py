@@ -680,12 +680,17 @@ def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density", t_seg=5,
     psx: power spectrum or spectral density (in unit of Hz^2/cm).
     """
     if use_welch:
+        # frequency resolution
+        freq_res = 1 / t_seg 
+        # number of frequencies per segment
+        nperseg = int(fs / freq_res)
+
         sample_freqs, psx = welch(
             x=x,
             fs=fs,
             window="hann",
             scaling=scaling,
-            nperseg=256,
+            nperseg=nperseg,
             return_onesided=True,
             detrend="linear",
             axis=axis,
