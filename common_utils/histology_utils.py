@@ -17,6 +17,7 @@ import seaborn as sns
 
 from pixels.error import PixelsError
 from common_utils import file_utils, plot_utils
+from common_utils.si_configs import *
 
 
 def cluster_channels(rec, top_threshold):
@@ -34,6 +35,8 @@ def cluster_channels(rec, top_threshold):
     clustered_channels: pd dataframe, channel info with k-means clustering
         labels.
     """
+    import spikeinterface as si
+
     # get channel locations
     chan_locs = rec.get_channel_locations()
     # get top channels only
