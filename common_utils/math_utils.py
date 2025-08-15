@@ -7,7 +7,7 @@ import psutil
 import pandas as pd
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import linregress, norm, anderson
+from scipy.stats import linregress, norm, anderson, bootstrap
 from scipy.interpolate import interp1d, PchipInterpolator
 from scipy.signal import periodogram, welch
 import sympy as sp
@@ -783,5 +783,84 @@ def bootstrap_ci(arr, axis, ci=0.95, target_stat="mean", method="basic",
     return res.confidence_interval.low, res.confidence_interval.high
 
 
+def _batch_permute(batch_size, a, axis):
+    """
+    Randomly sample batch.
+
+    params
+    ===
+    batch_size: int, number of items in a batch.
+
+    a: array like or int, sampling source.
+
+    size: int, number of samples to take.
+
+    axis: int, axis along which the selection is done.
+    
+    return
+    ===
+    samples: nd array, randomly selected samples, shape (batch_size, size).
+
+    """
+    rng = np.random.default_rng()
+
+    sample = np.array(
+        [rng.permutation(a, axis=axis) for _ in range(batch_size)]
+    )
+
+    return sample
 
 
+def random_permutation(a, axis=0, repeats=10000, n_processes=None):
+    """
+    Repeatedly randomly sample from a given array, or np.arange(a).
+
+    params
+    ===
+    a: array like or int, sampling source.
+
+    size: int, number of samples to take.
+
+    axis: int, axis along which the selection is done.
+    
+    repeats: int, number of repeat.
+
+    n_processes: int, number of cpu cores to use.
+
+    return
+    ===
+    samples: nd array, randomly selected samples, shape (repeats, size).
+    """
+
+    # define number of processes
+    n_processes = n_processes or mp.cpu_count() - 2
+
+    # get batch size in each process
+    base_batch = repeats // n_processes
+    remainder = repeats % n_processes
+    # create tasks
+    tasks = []
+    if remainder > 0:
+        for i in range(n_processes):
+            # Distribute remainder: first 'remainder' processes get an extra sample.
+            batch_size = base_batch + (1 if i < remainder else 0)
+            # Use i as a seed to differentiate RNG instances
+            tasks.append((batch_size, a, axis))
+
+    # create a pool of processes
+    pool = mp.Pool(processes=n_processes)
+    # apply sampling to each item in repeats
+    results = pool.starmap(
+        _batch_permute,
+        tasks,
+    )
+
+    # stop adding task to pool
+    pool.close()
+    # wait till all tasks in pool completed
+    pool.join()
+
+    # concatenate batches of results
+    samples = np.concatenate(results)
+
+    return samples
