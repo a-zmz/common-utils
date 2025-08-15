@@ -103,15 +103,22 @@ def plot_clustered_channels(clustered_channels):
     """
     shanks = clustered_channels.columns.levels[0]
 
+    if len(shanks) > 1:
+        ncols = len(shanks)//2
+        nrows = 2
+    else:
+        ncols = len(shanks)
+        nrows = ncols
+
     noise_fig, noise_ax = plt.subplots(
-        ncols=len(shanks)//2,
-        nrows=2,
+        ncols=ncols,
+        nrows=nrows,
         sharey=True,
         sharex=True,
     )
     clus_fig, clus_ax = plt.subplots(
-        ncols=len(shanks)//2,
-        nrows=2,
+        ncols=ncols,
+        nrows=nrows,
         sharey=True,
         sharex=True,
     )
