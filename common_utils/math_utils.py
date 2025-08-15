@@ -282,7 +282,7 @@ def fit_logistic(x, y, best_mid, num_max, normalised=False):
     np array: [k, x_0, maxima, minima, d_mid], round up to 3 digits.
     """
     if x.size < 2 or y.size < 2:
-        print("> Not enough data points to fit logistics.")
+        logging.info("> Not enough data points to fit logistics.")
 
         return np.full(5, np.nan)
 
@@ -316,7 +316,7 @@ def fit_logistic(x, y, best_mid, num_max, normalised=False):
     _, np_sec = get_logistic_derivative(*params, 2)
     sec_devs = np_sec(norm_x)
     if np.isnan(sec_devs).all():
-        #print(f"\n> Fitted logistic function is not differentiable, most likely",
+        #logging.info(f"\n> Fitted logistic function is not differentiable, most likely",
         #end=" cuz it's almost a step function, finding maxima & minima numerically.")
 
         # midpoint is the place with highest difference
@@ -745,6 +745,8 @@ def normality_check(df):
         columns=["A2", "success"],
         index=df.columns,
     )
-    print("normality check:\n", normality)
+    logging.info("normality check:\n", normality)
 
     return normality
+
+
