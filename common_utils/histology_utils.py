@@ -60,8 +60,8 @@ def cluster_channels(rec, top_threshold, fig_dir):
         logging.info(f"\n> clustering channels on shank {s} with k-means")
         Y_pred = ml_utils.k_means_clustering(
             data=traces.T,
-            #n_clusters=2,
             fig_dir=fig_dir+f"_shank{s}",
+            n_clusters=2,
         )
         # get channel locations
         shank_chan_locs = shank.get_channel_locations()
