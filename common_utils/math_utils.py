@@ -410,34 +410,6 @@ def fit_heavistep(x, y, best_mid, normalised=False):
     return np.append(params, [maxima, minima, d_mid]).round(3)
 
 
-def confidence_interval(array, axis=0, samples=10000, size=25):
-    """
-    Compute the 95% confidence interval of some data in an array.
-
-    Parameters
-    ==========
-    array : np.array
-        The data, can have any number of dimensions.
-
-    axis : int, optional
-        The axis in which to compute CIs. This axis is collapsed in the output. Default:
-        0.
-
-    samples : int, optional
-        The number of samples to bootstrap. Default: 10000.
-
-    size : int, optional
-        The size of each boostrapped sample. Default: 25.
-
-    """
-    samps = random_sampling(array, size, axis, samples)
-
-    medians = np.median(samps, axis=-1)
-    results = np.percentile(medians, [2.5, 97.5], axis=0)
-
-    return results[1, ...] - results[0, ...]
-
-
 # Function to process data in chunks
 def interpolate_data(timestamps, trial_counts, values, new_timestamps,
                           new_trial_counts, chunk_size=100000):
@@ -748,5 +720,68 @@ def normality_check(df):
     logging.info("normality check:\n", normality)
 
     return normality
+
+
+def confidence_interval(array, axis=0, samples=10000, size=25):
+    """
+    Compute the 95% confidence interval of some data in an array.
+
+    Parameters
+    ==========
+    array : np.array
+        The data, can have any number of dimensions.
+
+    axis : int, optional
+        The axis in which to compute CIs. This axis is collapsed in the output. Default:
+        0.
+
+    samples : int, optional
+        The number of samples to bootstrap. Default: 10000.
+
+    size : int, optional
+        The size of each boostrapped sample. Default: 25.
+
+    """
+    samps = random_sampling(array, size, axis, samples)
+
+    medians = np.median(samps, axis=-1)
+    results = np.percentile(medians, [2.5, 97.5], axis=0)
+
+    return results[1, ...] - results[0, ...]
+
+
+def bootstrap_ci(arr, axis, ci=0.95, target_stat="mean", method="basic",
+                 n_resamples=1000):
+    """
+    Compute bootstrap CI on the mean of arr along axis=0.
+
+    params
+    ===
+    arr : np.ndarray, shape = (n_trials, n_timepoints)
+
+    returns
+    ===
+    (low, high), each shape (n_timepoints,)
+    """
+    # `statistic` must consume arr and return mean over axis=0
+    if target_stat == "mean":
+        stat = np.mean
+    if target_stat == "median":
+        stat = np.median
+
+    res = bootstrap(
+        (arr,),
+        statistic=stat,
+        confidence_level=ci,
+        batch=100,
+        n_resamples=n_resamples,
+        method=method,# "BCa" for more accurate
+        vectorized=True,
+        axis=axis,
+        random_state=rng,
+    )
+    return res.confidence_interval.low, res.confidence_interval.high
+
+
 
 
