@@ -26,6 +26,7 @@ pd.set_option(
 '''>>> plt setting'''
 #mpl.use('Qt5Agg') # for better wayland support
 #mpl.use('MACOSX') # for mac
+mpl.use('Agg') # for ubuntu
 
 sns.set(
     #style="darkgrid", # gray background with grid
