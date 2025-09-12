@@ -38,7 +38,8 @@ sns.set(
 mpl.rcParams.update({
     "font.size": 14,
     #"font.family": ["Libertinus Sans"], # potentially for paper
-    "font.family": ["Latin Modern Sans"], # for thesis
+    #"font.family": ["Latin Modern Sans"], # for thesis
+    "font.family": ["LMSans12"], # on mac for thesis
     #"font.family": ["Libertinus Serif"], # for poster
     "xtick.labelsize": 12,
     "ytick.labelsize": 12,
