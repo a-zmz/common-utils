@@ -146,3 +146,16 @@ def make_fixed_subplots(nrows, ncols,
         hspace=hpad/subplot_h,
     )
     return fig, axes
+
+
+def get_handles_n_labels(ax):
+    # Collect handles and labels
+    handles, labels = ax.get_legend_handles_labels()
+
+    # Remove duplicates
+    unique_handles_labels = dict(zip(labels, handles))
+    labels = list(unique_handles_labels.keys())
+    handles = list(unique_handles_labels.values())
+
+    return handles, labels
+
