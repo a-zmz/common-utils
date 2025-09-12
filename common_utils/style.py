@@ -45,6 +45,8 @@ mpl.rcParams.update({
     "ytick.labelsize": 12,
     "axes.labelsize": 16,
     "axes.titlesize": 18,
+    "axes.spines.top": False, # remove top & right spine
+    "axes.spines.right": False,
 })
 
 plt.tight_layout()
