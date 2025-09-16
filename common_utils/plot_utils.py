@@ -124,12 +124,12 @@ def plot_QQ(data):
     return fig
 
 def make_fixed_subplots(nrows, ncols,
-                        subplot_w=2,   # inches
+                        subplot_w=2,  # inches
                         subplot_h=1,  # inches
-                        wpad=0.2,       # horizontal padding between subplots (inches)
-                        hpad=0.2,       # vertical padding
-                        margin_lr=0.2,  # left+right margin
-                        margin_tb=0.2,  # top+bottom margin
+                        wpad=1,       # horizontal padding between subplots (inches)
+                        hpad=1,       # vertical padding
+                        margin_lr=1,  # left+right margin
+                        margin_tb=1,  # top+bottom margin
                         **kwargs):
     fig_w = ncols * subplot_w + (ncols - 1) * wpad + 2 * margin_lr
     fig_h = nrows * subplot_h + (nrows - 1) * hpad + 2 * margin_tb
