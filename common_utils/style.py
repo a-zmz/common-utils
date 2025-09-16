@@ -48,6 +48,7 @@ mpl.rcParams.update({
     "axes.titlesize": 18,
     "axes.spines.top": False, # remove top & right spine
     "axes.spines.right": False,
+    "pdf.compression": 9, # highly compress pdf
 })
 
 plt.tight_layout()
