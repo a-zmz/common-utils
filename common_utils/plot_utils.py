@@ -71,9 +71,9 @@ def save(path, fig=None, nosize=False, use_pdfpages=False):
     }
 
     if suffix == "pdf":
-        save_kwargs["dpi"] = 300
+        save_kwargs["dpi"] = 150
     elif "svg" not in path.suffix:
-        save_kwargs["dpi"] = 600
+        save_kwargs["dpi"] = 300
 
     if suffix == "pdf" and use_pdfpages:
         with PdfPages(path) as pdf:
@@ -124,12 +124,12 @@ def plot_QQ(data):
     return fig
 
 def make_fixed_subplots(nrows, ncols,
-                        subplot_w=10,   # inches
-                        subplot_h=5,   # inches
-                        wpad=2,        # horizontal padding between subplots (inches)
-                        hpad=2,        # vertical padding
-                        margin_lr=2,   # left+right margin
-                        margin_tb=2,   # top+bottom margin
+                        subplot_w=2,   # inches
+                        subplot_h=1,  # inches
+                        wpad=0.2,       # horizontal padding between subplots (inches)
+                        hpad=0.2,       # vertical padding
+                        margin_lr=0.2,  # left+right margin
+                        margin_tb=0.2,  # top+bottom margin
                         **kwargs):
     fig_w = ncols * subplot_w + (ncols - 1) * wpad + 2 * margin_lr
     fig_h = nrows * subplot_h + (nrows - 1) * hpad + 2 * margin_tb
