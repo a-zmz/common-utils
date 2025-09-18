@@ -130,6 +130,7 @@ def make_fixed_subplots(nrows, ncols,
                         hpad=1,       # vertical padding
                         margin_lr=1,  # left+right margin
                         margin_tb=1,  # top+bottom margin
+                        extra_top=0.5,# for figure title
                         **kwargs):
     fig_w = ncols * subplot_w + (ncols - 1) * wpad + 2 * margin_lr
     fig_h = nrows * subplot_h + (nrows - 1) * hpad + 2 * margin_tb
@@ -141,7 +142,7 @@ def make_fixed_subplots(nrows, ncols,
         left=margin_lr/fig_w,
         right=1-margin_lr/fig_w,
         bottom=margin_tb/fig_h,
-        top=1-margin_tb/fig_h,
+        top=1-(margin_tb+extra_top)/fig_h,
         wspace=wpad/subplot_w,
         hspace=hpad/subplot_h,
     )
