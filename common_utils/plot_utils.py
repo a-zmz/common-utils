@@ -67,7 +67,7 @@ def save(path, fig=None, nosize=False, use_pdfpages=False):
     suffix = path.suffix.lower().lstrip(".")
     save_kwargs = {
         "bbox_inches": "tight",
-        "transparent": True,
+        "transparent": False,
     }
 
     if suffix == "pdf":
