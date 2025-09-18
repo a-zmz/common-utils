@@ -26,7 +26,14 @@ pd.set_option(
 '''>>> plt setting'''
 #mpl.use('Qt5Agg') # for better wayland support
 #mpl.use('MACOSX') # for mac
-mpl.use('Agg') # for ubuntu
+#mpl.use('Agg') # for ubuntu
+# open plots in web browser to make it easier
+mpl.use('WebAgg')
+mpl.rcParams["webagg.open_in_browser"] = False
+# bind only on loopback
+mpl.rcParams["webagg.address"] = "127.0.0.1"
+# pick a fixed port
+mpl.rcParams["webagg.port"] = 8988
 
 sns.set(
     #style="darkgrid", # gray background with grid
