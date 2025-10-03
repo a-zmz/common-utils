@@ -51,8 +51,9 @@ mpl.rcParams.update({
     #"font.family": ["Libertinus Serif"], # for poster
     "xtick.labelsize": 12,
     "ytick.labelsize": 12,
-    "axes.labelsize": 16,
-    "axes.titlesize": 18,
+    "axes.labelsize": 14,
+    "axes.titlesize": 16,
+    "axes.titlepad": 15,
     "axes.spines.top": False, # remove top & right spine
     "axes.spines.right": False,
     "pdf.compression": 9, # highly compress pdf
