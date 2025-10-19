@@ -176,7 +176,7 @@ def read_hdf5(path, key="df"):
     return df
 
 
-def write_hdf5(path, df, key="df", mode="w"):
+def write_hdf5(path, df, key="df", mode="w", format="table"):
     """
     Write a dataframe to an h5 file.
 
@@ -203,7 +203,7 @@ def write_hdf5(path, df, key="df", mode="w"):
         path_or_buf=path,
         key=key,
         mode=mode,
-        format='table',
+        format=format,
         index=False,
         complevel=9,
         complib="blosc:lz4hc",
