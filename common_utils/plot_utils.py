@@ -83,7 +83,7 @@ def save(path, fig=None, nosize=False, use_pdfpages=False):
 
     if len(path.parts) > 3:
         path = "/".join(path.parts[-3:])
-    logging.info(f"Figure saved to: {path}")
+    logging.info(f"\nFigure saved to: {path}")
 
     # close all open figures
     plt.close(fig)
