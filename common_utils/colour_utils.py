@@ -34,7 +34,8 @@ bi_norm = BoundaryNorm([0, 0.5, 1], cm_bi_heatmap.N)
 
 # purple, black & gray for light, dark & chance level
 '''>>> vr behaviour colours'''
-light_dark = ["#7d2fc7", "#000000"] # purple, black
+#light_dark = ["#7d2fc7", "#000000"] # purple, black
+light_dark = ["#7d2fc7", "#0c0c0c"] # purple, super dark gray
 lgt_orange = "#e2b28a" # light orange
 data_chance = ["#86a4ba", "#999999"] # light blue, gray
 # different light trial lengths, from short to long
