@@ -14,6 +14,7 @@ import numpy as np
 # NOTE for softer colours, set one RGB to 70, and modify others
 
 gray = "#999999" # gray
+black = "#000000" # black
 light_gray = "#b7b7b7"
 dark_gray = "#3d3d3d"
 water_blue = "#2f64c6"
