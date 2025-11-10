@@ -57,6 +57,10 @@ mpl.rcParams.update({
     "axes.spines.top": False, # remove top & right spine
     "axes.spines.right": False,
     "pdf.compression": 9, # highly compress pdf
+    "errorbar.capsize": 0.1,
+    "scatter.edgecolors": "#cccccc", # light gray
+    "lines.markeredgewidth": 0.5,
+    "lines.markeredgecolor": "#cccccc", # light gray
 })
 
 plt.tight_layout()
