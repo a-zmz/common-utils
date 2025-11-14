@@ -123,26 +123,55 @@ def plot_QQ(data):
 
     return fig
 
-def make_fixed_subplots(nrows, ncols,
-                        subplot_w=2,  # inches
-                        subplot_h=1,  # inches
-                        wpad=1,       # horizontal padding between subplots (inches)
-                        hpad=1,       # vertical padding
-                        margin_lr=1,  # left+right margin
-                        margin_tb=1,  # top+bottom margin
-                        extra_top=0.5,# for figure title
-                        **kwargs):
+def make_fixed_subplots(
+    nrows, ncols, subplot_w=2, subplot_h=1, wpad=1, hpad=1, margin_lr=1,
+    margin_tb=1, supxlabel="", supylabel="", suptitle="", **kwargs,
+):
+    """
+    create figure with fixed size subplots.
+
+    params
+    ===
+    nrows: float, number of rows.
+    ncols: float, number of columns.
+    subplot_w: float, horizontal padding between subplots.
+        default: 2
+    subplot_h: float, vertical padding between subplots.
+        default: 1
+    wpad: float, left+right margin.
+        default: 1
+    hpad: float, top+bottom margin.
+        default: 1
+    margin_lr: float, figure left and right margin.
+        default: 1
+    margin_tb: float, figure top and bottom margin.
+        default: 1
+    supxlabel: str, figure sup xlabel text.
+        default: ""
+    supylabel: str, figure sup ylabel text.
+        default: ""
+    suptitle: str, figure sup title text.
+        default: ""
+    kwargs: keyword arguments for matplotlib.
+    """
+    extra_tb = 0.4 # for figure title
+    extra_lr = 0.2 # for figure x label
+    # add extra margin on top and bottom
+    margin_tb = margin_tb + extra_tb
+
     fig_w = ncols * subplot_w + (ncols - 1) * wpad + 2 * margin_lr
     fig_h = nrows * subplot_h + (nrows - 1) * hpad + 2 * margin_tb
-    fig, axes = plt.subplots(nrows, ncols,
-                             figsize=(fig_w, fig_h),
-                             **kwargs)
-    # Optionally tweak spacing to match wpad/hpad exactly
+
+    fig, axes = plt.subplots(
+        nrows, ncols, figsize=(fig_w, fig_h), **kwargs,
+    )
+
+    # tweak spacing to match wpad/hpad exactly
     fig.subplots_adjust(
-        left=margin_lr/fig_w,
+        left=(margin_lr+extra_lr)/fig_w,
         right=1-margin_lr/fig_w,
         bottom=margin_tb/fig_h,
-        top=1-(margin_tb+extra_top)/fig_h,
+        top=1-margin_tb/fig_h,
         wspace=wpad/subplot_w,
         hspace=hpad/subplot_h,
     )
