@@ -175,6 +175,12 @@ def make_fixed_subplots(
         wspace=wpad/subplot_w,
         hspace=hpad/subplot_h,
     )
+
+    # set position of figure x, ylabel, and suptitle
+    fig.supxlabel(fig_xlabel, y=0.01)
+    fig.supylabel(fig_ylabel, x=0.02)
+    fig.suptitle(fig_suptitle, y=0.995)
+
     return fig, axes
 
 
