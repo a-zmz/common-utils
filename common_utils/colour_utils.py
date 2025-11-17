@@ -18,6 +18,7 @@ black = "#000000" # black
 light_gray = "#b7b7b7"
 dark_gray = "#3d3d3d"
 water_blue = "#2f64c6"
+dark_blue = "#072651"
 
 # VR lick heatmap
 blue_yellow = ["#072651", "#977713", "#ca9f1a", "#fdc721"]
