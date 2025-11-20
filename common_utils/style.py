@@ -63,6 +63,21 @@ mpl.rcParams.update({
     "lines.markeredgecolor": "#cccccc", # light gray
 })
 
+# if to plot on dark background
+"""
+mpl.rcParams.update({
+    "figure.facecolor": "#0f0f0f", # very dark gray
+    "axes.facecolor": "#0f0f0f", # very dark gray
+    "axes.edgecolor": "white",
+    "axes.labelcolor": "white",
+    "xtick.color": "white",
+    "ytick.color": "white",
+    "text.color": "white",
+    "grid.color": "#3d3d3d", # dark gray
+    "savefig.facecolor": "#0f0f0f", # very dark gray
+})
+"""
+
 plt.tight_layout()
 '''<<< plt setting'''
 
