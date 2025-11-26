@@ -59,23 +59,23 @@ mpl.rcParams.update({
     "axes.spines.right": False,
     "pdf.compression": 9, # highly compress pdf
     "errorbar.capsize": 0.1,
-    "scatter.edgecolors": "#cccccc", # light gray
+    "scatter.edgecolors": "#cccccc", # gray80 (204, 204, 204)
     "lines.markeredgewidth": 0.5,
-    "lines.markeredgecolor": "#cccccc", # light gray
+    "lines.markeredgecolor": "#cccccc", # gray80
 })
 
 # if to plot on dark background
 """
 mpl.rcParams.update({
-    "figure.facecolor": "#0f0f0f", # very dark gray
-    "axes.facecolor": "#0f0f0f", # very dark gray
+    "figure.facecolor": "#0f0f0f", # gray6 (15,15,15)
+    "axes.facecolor": "#0f0f0f", # gray6
     "axes.edgecolor": "white",
     "axes.labelcolor": "white",
     "xtick.color": "white",
     "ytick.color": "white",
     "text.color": "white",
-    "grid.color": "#3d3d3d", # dark gray
-    "savefig.facecolor": "#0f0f0f", # very dark gray
+    "grid.color": "#3d3d3d", # gray24 (61,61,61)
+    "savefig.facecolor": "#0f0f0f", # gray6
 })
 """
 
