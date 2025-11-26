@@ -36,14 +36,9 @@ bi_blue_yellow = ["#072651", "#fdc721"]
 cm_bi_heatmap = ListedColormap(bi_blue_yellow)
 bi_norm = BoundaryNorm([0, 0.5, 1], cm_bi_heatmap.N)
 
-# VR behavour
-# blues = ["#2f83c6", "#86a4ba"] # darker, lighter
-#light_dark = ["#2f83c6", "#000000"] # blue, black
-
 # purple, black & gray for light, dark & chance level
 '''>>> vr behaviour colours'''
-#light_dark = ["#7d2fc7", "#000000"] # purple, black
-light_dark = [purple, super_dark_gray] # purple, super dark gray
+light_dark = [purple, super_dark_gray]
 lgt_orange = "#e2b28a" # light orange
 data_chance = ["#86a4ba", "#999999"] # light blue, gray
 # different light trial lengths, from short to long
@@ -70,10 +65,6 @@ cm_lengths = {
 V1_orange = ["#c65f2f", "#c6782f", "#c6a02f"] # orange, yellowish orange, greenish orange
 cm_v1 = LinearSegmentedColormap.from_list("cm_v1", V1_orange)
 '''v1 oranges<<<'''
-
-# TODO nov7 should i keep separating colour & plot utils or put them together?
-# also see what is the best way to do colours: cmap or sns palette or just
-# dictionary like `regions`
 
 '''>>> hpf blues'''
 #HPF_blues = ["#0ea7b5", "#6bd2db", "#2f83c6", "#59a6e3", "#65ade6",
