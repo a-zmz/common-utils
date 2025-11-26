@@ -13,10 +13,12 @@ import numpy as np
 # NOTE to use registered cmap, simply do cmap='for_heatmap'
 # NOTE for softer colours, set one RGB to 70, and modify others
 
-gray = "#999999" # gray
-black = "#000000" # black
-light_gray = "#b7b7b7"
-dark_gray = "#3d3d3d"
+gray60 = "#999999" # (153, 153, 153)
+gray48 = "#7a7a7a" # (122, 122, 122)
+gray42 = "#6b6b6b" # (107, 107, 107)
+darker_gray = "#4c4c4c" # (76, 76, 76)
+gray24 = "#3d3d3d" # (61, 61, 61)
+super_dark_gray = "#0c0c0c" # (12, 12, 12)
 water_blue = "#2f64c6"
 dark_blue = "#072651"
 
@@ -46,8 +48,8 @@ cm_light = LinearSegmentedColormap.from_list("cm_light", light_lengths)
 dark_lengths = ["#02314d", "#1B455E", "#345A70", "#4D6E82", "#678394",
                 "#8097A6"]
 cm_dark = LinearSegmentedColormap.from_list("cm_dark", dark_lengths)
-chance_lengths = ["#4C4C4C", "#5B5B5B", "#6B6B6B", "#7A7A7A", "#898989",
-                  "#999999"]
+chance_lengths = [darker_gray, "#5B5B5B", gray42, gray48, "#898989",
+                  gray60]
 cm_chance = LinearSegmentedColormap.from_list("cm_chance", chance_lengths)
 cm_lengths = {
     "light": cm_light,
@@ -79,7 +81,7 @@ cm_hpf = LinearSegmentedColormap.from_list("cm_v1", HPF_blue)
 regions = {
     "V1": V1_orange[0],
     "HPF": HPF_blue[0],
-    "na": gray,
+    "na": gray60,
 }
 
 # cell type: regular-spiker1, regular-spiker2, fast-spiker
@@ -90,7 +92,7 @@ HPF = dict(zip(cell_types, HPF_blue))
 regional_cell_type = {
     "V1": V1,
     "HPF": HPF,
-    "Unidentified": gray,
+    "Unidentified": gray60,
 }
 
 # >>> snake plot colours >>>
