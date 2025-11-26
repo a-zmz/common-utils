@@ -13,12 +13,16 @@ import numpy as np
 # NOTE to use registered cmap, simply do cmap='for_heatmap'
 # NOTE for softer colours, set one RGB to 70, and modify others
 
+purple = "#7d2fc7"
+light_purple = "#be97e2"
+light_gray = "#b7b7b7" # (183, 183, 183)
 gray60 = "#999999" # (153, 153, 153)
 gray48 = "#7a7a7a" # (122, 122, 122)
 gray42 = "#6b6b6b" # (107, 107, 107)
 darker_gray = "#4c4c4c" # (76, 76, 76)
 gray24 = "#3d3d3d" # (61, 61, 61)
 super_dark_gray = "#0c0c0c" # (12, 12, 12)
+black = "#000000" # (0, 0, 0)
 water_blue = "#2f64c6"
 dark_blue = "#072651"
 
@@ -38,12 +42,12 @@ bi_norm = BoundaryNorm([0, 0.5, 1], cm_bi_heatmap.N)
 # purple, black & gray for light, dark & chance level
 '''>>> vr behaviour colours'''
 #light_dark = ["#7d2fc7", "#000000"] # purple, black
-light_dark = ["#7d2fc7", "#0c0c0c"] # purple, super dark gray
+light_dark = [purple, super_dark_gray] # purple, super dark gray
 lgt_orange = "#e2b28a" # light orange
 data_chance = ["#86a4ba", "#999999"] # light blue, gray
 # different light trial lengths, from short to long
-light_lengths = ["#7d2fc7", "#8A43CC", "#9758D2", "#A46DD7", "#B182DD",
-                 "#BE97E2"]
+light_lengths = [purple, "#8A43CC", "#9758D2", "#A46DD7", "#B182DD",
+                 light_purple]
 cm_light = LinearSegmentedColormap.from_list("cm_light", light_lengths)
 dark_lengths = ["#02314d", "#1B455E", "#345A70", "#4D6E82", "#678394",
                 "#8097A6"]
