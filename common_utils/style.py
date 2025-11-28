@@ -49,12 +49,13 @@ mpl.rcParams.update({
     #"font.family": ["Latin Modern Sans"], # for thesis
     "font.family": ["LMSans12"], # on mac for thesis
     #"font.family": ["Libertinus Serif"], # for poster
-    "axes.titlesize": 16,
-    "axes.titlepad": 15,
-    "axes.labelsize": 14,
+    "figure.titlesize": 18,
+    "axes.titlesize": 14,
+    "axes.labelsize": 12,
     "xtick.labelsize": 12,
     "ytick.labelsize": 12,
     "legend.fontsize": 12,
+    "axes.titlepad": 8, # space between plot and ax title
     "axes.spines.top": False, # remove top & right spine
     "axes.spines.right": False,
     "pdf.compression": 9, # highly compress pdf
