@@ -44,7 +44,6 @@ sns.set(
 )
 
 mpl.rcParams.update({
-    "font.size": 14,
     #"font.family": ["Libertinus Sans"], # potentially for paper
     #"font.family": ["Latin Modern Sans"], # for thesis
     "font.family": ["LMSans12"], # on mac for thesis
@@ -55,6 +54,7 @@ mpl.rcParams.update({
     "xtick.labelsize": 12,
     "ytick.labelsize": 12,
     "legend.fontsize": 12,
+    "font.size": 12,
     "axes.titlepad": 8, # space between plot and ax title
     "axes.spines.top": False, # remove top & right spine
     "axes.spines.right": False,
