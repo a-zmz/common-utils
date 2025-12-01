@@ -186,13 +186,26 @@ def make_fixed_subplots(
 
 
 def get_handles_n_labels(ax):
-    # Collect handles and labels
+    # collect handles and labels
     handles, labels = ax.get_legend_handles_labels()
 
-    # Remove duplicates
+    # remove duplicates
     unique_handles_labels = dict(zip(labels, handles))
     labels = list(unique_handles_labels.keys())
     handles = list(unique_handles_labels.values())
 
     return handles, labels
 
+
+def recreate_axes_with_style(ax, style="darkgrid"):
+    """
+    Style existing ax with seaborn.
+    """
+    fig = ax.figure
+    spec = ax.get_subplotspec()
+    fig.delaxes(ax)
+
+    with sns.axes_style(style):
+        styled_ax = fig.add_subplot(spec)
+
+    return styled_ax
