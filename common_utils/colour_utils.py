@@ -15,15 +15,20 @@ import numpy as np
 
 purple = "#7d2fc7"
 light_purple = "#be97e2"
+
+seaborn_gray = "#eaeaf2" # (234,234,242)
 light_gray = "#b7b7b7" # (183,183,183)
+gray80 = "#cccccc" # (204,204,204)
 gray60 = "#999999" # (153,153,153)
 gray48 = "#7a7a7a" # (122,122,122)
 gray42 = "#6b6b6b" # (107,107,107)
 darker_gray = "#4c4c4c" # (76,76,76)
 gray24 = "#3d3d3d" # (61,61,61)
+gray15 = "#262626" # (38,38,38)
 gray6 = "#0f0f0f" # (15,15,15)
 super_dark_gray = "#0c0c0c" # (12,12,12)
 black = "#000000" # (0,0,0)
+
 water_blue = "#2f64c6"
 dark_blue = "#072651"
 
