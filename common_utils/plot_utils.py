@@ -9,6 +9,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 from common_utils.file_utils import make_path
 from common_utils.style import *
+from common_utils.colour_utils import gray15
 
 
 class Subplots2D:
@@ -197,15 +198,54 @@ def get_handles_n_labels(ax):
     return handles, labels
 
 
-def recreate_axes_with_style(ax, style="darkgrid"):
+def restyle_ax(ax, style="darkgrid", keep_spines=False):
     """
-    Style existing ax with seaborn.
+    Style existing ax with a seaborn style.
     """
-    fig = ax.figure
-    spec = ax.get_subplotspec()
-    fig.delaxes(ax)
+    st = sns.axes_style(style)
+    
+    # set colours
+    ax.set_facecolor(st["axes.facecolor"])
 
-    with sns.axes_style(style):
-        styled_ax = fig.add_subplot(spec)
+    # set grid
+    if st.get("axes.grid"):
+        ax.grid(
+            True,
+            which="major",
+            color=st.get("grid.color", "white"),
+            linestyle=st.get("grid.linestyle", "-"),
+            linewidth=st.get("grid.linewidth", 1.0),
+        )
+    else:
+        ax.grid(False)
 
-    return styled_ax
+    # spines
+    if keep_spines:
+        for spine in ax.spines.values():
+            spine.set_linewidth(st.get("axes.linewidth", 1.0))
+            spine.set_color(st["axes.edgecolor"], "white")
+    else:
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+    # set ticks
+    ax.tick_params(
+        axis="x",
+        which="both",
+        bottom=st.get("xtick.bottom", False),
+        top=st.get("xtick.top", False),
+        color=st.get("xtick.color", gray15),
+        direction=st.get("xtick.direction", "out"),
+        labelcolor=st.get("text.color", gray15),
+    )
+    ax.tick_params(
+        axis="y",
+        which="both",
+        left=st.get("ytick.left", False),
+        right=st.get("ytick.right", False),
+        color=st.get("ytick.color", gray15),
+        direction=st.get("ytick.direction", "out"),
+        labelcolor=st.get("text.color", gray15),
+    )
+
+    return None
