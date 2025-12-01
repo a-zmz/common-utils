@@ -69,6 +69,16 @@ mpl.rcParams.update({
     "scatter.edgecolors": gray80,
     "lines.markeredgecolor": gray80,
     # <<< colours <<<
+    # >>> ticks >>>
+    "ytick.major.pad": 2.5, # distance between label to tick
+    "ytick.minor.pad": 2.0,
+    "xtick.major.pad": 2.5,
+    "xtick.minor.pad": 2.0,
+    "ytick.major.size": 4, # tick length
+    "ytick.minor.size": 2.5,
+    "xtick.major.size": 4,
+    "xtick.minor.size": 2.5,
+    # <<< ticks <<<
     # >>> misc >>>
     "lines.markeredgewidth": 0.5, # marker edge width
     "pdf.compression": 9, # highly compress pdf
