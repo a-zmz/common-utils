@@ -50,7 +50,8 @@ mpl.rcParams.update({
     #"font.family": ["Latin Modern Sans"], # for thesis
     "font.family": ["LMSans12"], # on mac for thesis
     #"font.family": ["Libertinus Serif"], # for poster
-    "figure.titlesize": 18,
+    # >>> font size >>>
+    "figure.titlesize": 18, # font size
     "axes.titlesize": 14,
     "axes.labelsize": 12,
     "xtick.labelsize": 12,
@@ -58,13 +59,21 @@ mpl.rcParams.update({
     "legend.fontsize": 12,
     "font.size": 12,
     "axes.titlepad": 8, # space between plot and ax title
+    # <<< font size <<<
+    # >>> spine >>>
     "axes.spines.top": False, # remove top & right spine
     "axes.spines.right": False,
+    # <<< spine <<<
+    # >>> colours >>>
+    "text.color": gray15,
+    "scatter.edgecolors": gray80,
+    "lines.markeredgecolor": gray80,
+    # <<< colours <<<
+    # >>> misc >>>
+    "lines.markeredgewidth": 0.5, # marker edge width
     "pdf.compression": 9, # highly compress pdf
-    "errorbar.capsize": 0.1,
-    "scatter.edgecolors": "#cccccc", # gray80 (204, 204, 204)
-    "lines.markeredgewidth": 0.5,
-    "lines.markeredgecolor": "#cccccc", # gray80
+    "errorbar.capsize": 0.1, # error bar cap width
+    # <<< misc <<<
 })
 
 # if to plot on dark background
