@@ -11,6 +11,8 @@ import cmocean
 import seaborn as sns
 import pandas as pd
 
+from common_utils.colour_utils import gray15, gray80
+
 '''>>> pandas display setting'''
 # display all columns
 pd.set_option(
