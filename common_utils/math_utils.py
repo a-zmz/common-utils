@@ -646,8 +646,10 @@ def kendalls_w_test(ranks):
     return W, chi2_stat, df, pval
 
 
-def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density", t_seg=5,
-                            use_welch=True):
+def estimate_power_spectrum(
+    x, fs=1.0, axis=-1, scaling="density", t_seg=5, nperseg=256,
+    small_nperseg=128, use_welch=True,
+):
     """
     Estimate power spectrum or spectral density using periodogram.
 
@@ -670,6 +672,13 @@ def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density", t_seg=5,
     t_seg: int, duration of frequency segment.
         Default: 5 seconds.
 
+    nperseg: int, number of samples per frequency segment.
+        Default: 256.
+
+    small_nperseg: int, smaller number of samples per frequency segment for
+        smaller sample.
+        Default: 128.
+
     use_welch: bool, use welch or periodogram.
         Default: True, it gives smoother, low variance estimate of the psd.
 
@@ -682,8 +691,21 @@ def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density", t_seg=5,
     if use_welch:
         # frequency resolution
         freq_res = 1 / t_seg 
-        # number of frequencies per segment
-        nperseg = int(fs / freq_res)
+        # get max possible number of frequencies per segment
+        nperseg_max = max(int(fs / freq_res), nperseg)
+
+        # get number of frequencies per segment based on sample size
+        if x.size > nperseg:
+            nperseg = min(x.size, nperseg_max)
+            # number of points to overlap between segments
+            noverlap = nperseg // 2
+        elif (x.size <= nperseg)\
+            and (x.size > small_nperseg):
+            nperseg = small_nperseg
+            noverlap = nperseg // 2
+        elif x.size < small_nperseg:
+            nperseg = x.size
+            noverlap = 0
 
         sample_freqs, psx = welch(
             x=x,
@@ -691,6 +713,7 @@ def estimate_power_spectrum(x, fs=1.0, axis=-1, scaling="density", t_seg=5,
             window="hann",
             scaling=scaling,
             nperseg=nperseg,
+            noverlap=noverlap,
             return_onesided=True,
             detrend="linear",
             axis=axis,
