@@ -717,7 +717,7 @@ def estimate_power_spectrum(
             return_onesided=True,
             detrend="linear",
             axis=axis,
-            average="median",
+            average="mean",
         )
     else:
         sample_freqs, psx = periodogram(
