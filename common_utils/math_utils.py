@@ -647,8 +647,7 @@ def kendalls_w_test(ranks):
 
 
 def estimate_power_spectrum(
-    x, fs=1.0, axis=-1, scaling="density", t_seg=5, nperseg=256,
-    small_nperseg=128, use_welch=True,
+    x, fs=1.0, axis=-1, scaling="density", t_seg=5, nperseg=256, use_welch=True,
 ):
     """
     Estimate power spectrum or spectral density using periodogram.
@@ -675,10 +674,6 @@ def estimate_power_spectrum(
     nperseg: int, number of samples per frequency segment.
         Default: 256.
 
-    small_nperseg: int, smaller number of samples per frequency segment for
-        smaller sample.
-        Default: 128.
-
     use_welch: bool, use welch or periodogram.
         Default: True, it gives smoother, low variance estimate of the psd.
 
@@ -691,21 +686,13 @@ def estimate_power_spectrum(
     if use_welch:
         # frequency resolution
         freq_res = 1 / t_seg 
-        # get max possible number of frequencies per segment
-        nperseg_max = max(int(fs / freq_res), nperseg)
+        nperseg_max = int(fs / freq_res)
 
-        # get number of frequencies per segment based on sample size
-        if x.size > nperseg:
+        if not nperseg:
+            # get max possible number of frequencies per segment
             nperseg = min(x.size, nperseg_max)
-            # number of points to overlap between segments
-            noverlap = nperseg // 2
-        elif (x.size <= nperseg)\
-            and (x.size > small_nperseg):
-            nperseg = small_nperseg
-            noverlap = nperseg // 2
-        elif x.size < small_nperseg:
-            nperseg = x.size
-            noverlap = 0
+
+        noverlap = nperseg // 2 if not nperseg == x.size else 0
 
         sample_freqs, psx = welch(
             x=x,
