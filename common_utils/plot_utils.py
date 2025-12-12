@@ -125,8 +125,8 @@ def plot_QQ(data):
     return fig
 
 def make_fixed_subplots(
-    nrows, ncols, subplot_w=2, subplot_h=1, wpad=1, hpad=1, margin_lr=1,
-    margin_tb=1, supxlabel="", supylabel="", suptitle="", **kwargs,
+    nrows, ncols, subplot_w=2, subplot_h=1, wpad=0.6, hpad=0.6, margin_lr=0.8,
+    margin_tb=0.8, supxlabel="", supylabel="", suptitle="", **kwargs,
 ):
     """
     create figure with fixed size subplots.
@@ -155,7 +155,7 @@ def make_fixed_subplots(
         default: ""
     kwargs: keyword arguments for matplotlib.
     """
-    extra_tb = 0.4 # for figure title
+    extra_tb = 0.2 # for figure title
     extra_lr = 0.2 # for figure x label
     # add extra margin on top and bottom
     margin_tb = margin_tb + extra_tb
