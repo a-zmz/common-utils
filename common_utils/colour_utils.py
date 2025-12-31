@@ -114,6 +114,12 @@ clipped = base(np.linspace(0.1, 0.9, 256))
 cm_zscore = LinearSegmentedColormap.from_list("cm_zscore", clipped, N=256)
 # <<< z-score heatmap colours <<<
 
+# >>> confusion matrix heatmap colours >>>
+base = plt.get_cmap("cmo.thermal") # better association with heat 
+cm_clipped = base(np.linspace(0.1, 0.9, 256))
+cm_confu_mtx = LinearSegmentedColormap.from_list("cm_confu_mtx", cm_clipped, N=256)
+# <<< confusion matrix heatmap colours <<<
+
 # NOTE july 29 2025:
 # nice cmaps:
 """
