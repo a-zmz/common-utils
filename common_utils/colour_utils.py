@@ -139,7 +139,7 @@ vibrant = ["#EE7733", "#0077BB", "#33BBEE", "#EE3377", "#CC3311", "#009988",
 muted = ["#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255",
          "#44AA99", "#999933", "#AA4499"]
 pale = ["#BBCCEE", "#CCEEFF", "#CCDDAA", "#EEEEBB", "#FFCCCC", "#DDDDDD"]
-darker ["#222255", "#225555", "#225522", "#666633", "#663333", "#555555"]
+darker = ["#222255", "#225555", "#225522", "#666633", "#663333", "#555555"]
 lighter = ["#77AADD", "#EE8866", "#EEDD88", "#FFAABB", "#99DDFF", "#44BB99",
            "#BBCC33", "#AAAA00", "#DDDDDD"]
 # <<< colourblind friendly colours <<<
