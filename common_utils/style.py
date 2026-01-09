@@ -56,6 +56,7 @@ mpl.rcParams.update({
     "axes.labelsize": 12,
     "xtick.labelsize": 12,
     "ytick.labelsize": 12,
+    "legend.title_fontsize": 14,
     "legend.fontsize": 12,
     "font.size": 12,
     "axes.titlepad": 8, # space between plot and ax title
