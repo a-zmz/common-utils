@@ -181,7 +181,7 @@ def make_fixed_subplots(
     # set position of figure x, ylabel, and suptitle
     fig.supxlabel(supxlabel, y=0.005)
     fig.supylabel(supylabel, x=ylabel_x)
-    fig.suptitle(suptitle, y=0.995)
+    fig.suptitle(suptitle, y=0.995, wrap=True)
 
     return fig, axes
 
