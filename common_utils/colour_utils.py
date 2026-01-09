@@ -126,3 +126,8 @@ cm_confu_mtx = LinearSegmentedColormap.from_list("cm_confu_mtx", cm_clipped, N=2
 cmap_names = ["cubehelix", "cmo.thermal_r_i", "cmo.oxy", "cmo.dense_i",
 "cmo.deep_i", "cmo.tempo_r", "cividis"]
 """
+
+# >>> colourblind friendly colours >>>
+categorical = ["CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255",
+               "#44AA99", "#999933", "#AA4499"]
+# <<< colourblind friendly colours <<<
