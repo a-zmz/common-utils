@@ -128,6 +128,6 @@ cmap_names = ["cubehelix", "cmo.thermal_r_i", "cmo.oxy", "cmo.dense_i",
 """
 
 # >>> colourblind friendly colours >>>
-categorical = ["CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255",
+categorical = ["#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255",
                "#44AA99", "#999933", "#AA4499"]
 # <<< colourblind friendly colours <<<
