@@ -58,6 +58,7 @@ running = "~/running_data/"
 server_w = "~/w/arthur/"
 server_v = "~/v/arthur/"
 datastore = "~/datastore/arthur/"
+synology = "~/synology/arthur/"
 
 # meta
 oestrus_meta = "~/w/arthur/JSONs/"
