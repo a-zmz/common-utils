@@ -61,6 +61,11 @@ mpl.rcParams.update({
     "font.size": 12,
     "axes.titlepad": 8, # space between plot and ax title
     # <<< font size <<<
+    # >>> font weight >>>
+    "font.weight": "bold",
+    "axes.labelweight": "bold",
+    "axes.titleweight": "bold",
+    # <<< font weight <<<
     # >>> spine >>>
     "axes.spines.top": False, # remove top & right spine
     "axes.spines.right": False,
