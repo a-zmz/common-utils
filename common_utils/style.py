@@ -53,12 +53,12 @@ mpl.rcParams.update({
     # >>> font size >>>
     "figure.titlesize": 18, # font size
     "axes.titlesize": 14,
-    "axes.labelsize": 12,
-    "xtick.labelsize": 12,
-    "ytick.labelsize": 12,
+    "axes.labelsize": 10,
+    "xtick.labelsize": 10,
+    "ytick.labelsize": 10,
     "legend.title_fontsize": 14,
-    "legend.fontsize": 12,
-    "font.size": 12,
+    "legend.fontsize": 10,
+    "font.size": 10,
     "axes.titlepad": 8, # space between plot and ax title
     # <<< font size <<<
     # >>> font weight >>>
