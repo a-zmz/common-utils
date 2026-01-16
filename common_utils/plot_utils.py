@@ -249,3 +249,8 @@ def restyle_ax(ax, style="darkgrid", keep_spines=False):
     )
 
     return None
+
+
+def bold_ticks(ax):
+    plt.setp(ax.get_xticklabels(), fontweight="bold")
+    plt.setp(ax.get_yticklabels(), fontweight="bold")
