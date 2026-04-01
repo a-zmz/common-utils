@@ -23,7 +23,7 @@ oes_cohort_1 = [
 ]
 
 # vision in darkness
-vd_cohort_1 = [
+vd_cohort_1 = [ # female
     "WDAN00",
     "WDAN01",
 ]
@@ -31,7 +31,7 @@ vd_cohort_2 = [
     "WDAN03",
     "WDAN04",
 ]
-vd_cohort_3 = [
+vd_cohort_3 = [ # female
     "WDAN05",
     "WDAN06",
     "WDAN07",
