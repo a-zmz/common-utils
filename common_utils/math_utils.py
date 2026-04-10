@@ -7,7 +7,10 @@ import psutil
 import pandas as pd
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import linregress, norm, anderson, bootstrap
+import statistics as sts
+from scipy.stats import (linregress, norm, anderson, bootstrap, wilcoxon,
+                         ttest_rel, rankdata, shapiro)
+from statsmodels.stats.power import TTestPower
 from scipy.interpolate import interp1d, PchipInterpolator
 from scipy.signal import periodogram, welch
 import sympy as sp
@@ -884,3 +887,149 @@ def random_permutation(a, axis=0, repeats=10000, n_processes=None):
     samples = np.concatenate(results)
 
     return samples
+
+
+def paired_data_mean_comparison(a, b, hypothesis):
+    """
+    Mean comparison for paired data.
+    Depending on data, we use paired-sample t-test, or Wilcoxon signed-rank.
+    For t-test, the effect size is measured by cohen'd; for Wilcoxon, we use
+    rank-biserial correlation.
+    ===
+    a: array-like, 1D.
+
+    b: array-like, 1D.
+        Paired data of a.
+
+    hypothesis: str, alternative hypothesis.
+        'two-sided', 'greater', or 'less'.
+    """
+    alpha = 0.05
+
+    # check if they are paired
+    assert len(a) == len(b), "not paired!"
+
+    parmetric = False
+
+    # check normality: is the sample from a normal distribution population,
+    # i.e., p>0.05?
+    if len(a) >= 3:
+        W, W_p = shapiro(a - b)
+        #print('\nnaive normality check: W =', W, 'p =', W_p)
+        if W_p > alpha:
+            parmetric = True
+
+    if parmetric:
+    # do parametric
+        stat, p = ttest_rel(a, b, alternative=hypothesis)
+        effect_size = get_cohens_d(a, b, paired=True)
+        test_name = "paired_t"
+    else:
+    # do non-parametric
+        stat, p = wilcoxon(a, b, alternative=hypothesis)
+        effect_size = get_rank_biserial(a, b)
+        test_name = "wilcoxon"
+    
+    return {
+        "test": test_name,
+        "stat": stat,
+        "p": p,
+        "effect_size": effect_size,
+        }
+
+
+def get_cohens_d(a, b, paired=False):
+    a_size, b_size = len(a), len(b)
+    a_var, b_var = sts.variance(a), sts.variance(b)
+
+    if paired:
+        assert a_size == b_size, "not paired!"
+        # paired sample
+        diff = [x - y for x, y in zip(a, b)]
+        s = sts.stdev(diff)
+    else:
+        # pooled variance
+        s = np.sqrt(
+            ((a_size - 1) * a_var + (b_size - 1) * b_var)
+            / (a_size + b_size - 2)
+        )
+
+    a_mean, b_mean = sts.mean(a), sts.mean(b)
+    d = abs(a_mean - b_mean) / s
+
+    if d >= 0.8:
+        print('large effect size :)')
+    elif d >= 0.5:
+        print('medium effect size.')
+    elif d >= 0.2:
+        print('small effect size :(')
+    else:
+        print('negligible effect size :(')
+
+    return d
+
+
+def get_rank_biserial(a, b):
+    diff = a - b
+
+    # remove zeros
+    diff = diff[diff != 0]
+
+    ranks = rankdata(np.abs(diff))
+
+    w_pos = ranks[diff > 0].sum()
+    w_neg = ranks[diff < 0].sum()
+
+    r_rb = abs((w_pos - w_neg) / (w_pos + w_neg))
+
+    if r_rb >= 0.5:
+        print('large effect size :)')
+    elif r_rb >= 0.3:
+        print('medium effect size.')
+    elif r_rb >= 0.1:
+        print('small effect size :(')
+    else:
+        print('negligible effect size :(')
+
+    return r_rb
+
+
+def compute_required_sample_size(alpha=0.05, power=0.8, hypothesis="larger"):
+    """
+    Statistical power calculation for one sample or paired sample t-test.
+    Check how many samples we need to achieve large effect size and given power.
+
+    params
+    ===
+    power: float, aim power.
+
+    hypothesis: str, alternative hypothesis, 'two-side', 'larger', or 'smaller'.
+    """
+    power_analysis = TTestPower()
+
+    # expected Cohen's d
+    effect_size = 0.8
+
+    n_required = power_analysis.solve_power(
+        effect_size=effect_size,
+        alpha=alpha,
+        power=power,
+        alternative=hypothesis,
+    )
+
+    print(f"\n> To achieve a power of {power:.2f} given alpha = {alpha:.2f}, we\n"
+          f"need {n_required:.2f} samples.")
+
+    return
+
+
+def simulate_wilcoxon_power(mean_diff, sd_diff, n, n_sim=5000, alpha=0.05):
+    sig = 0
+    for _ in range(n_sim):
+        diff = np.random.normal(loc=mean_diff, scale=sd_diff, size=n)
+        x = diff
+        y = np.zeros(n)
+        p = wilcoxon(x, y, alternative='greater').pvalue
+        if p < alpha:
+            sig += 1
+    return sig / n_sim
