@@ -24,26 +24,26 @@ oes_cohort_1 = [
 
 # vision in darkness
 vd_cohort_1 = [ # female
-    "WDAN00",
-    "WDAN01",
+    "WDAN00", # no neural data
+    "WDAN01", # dual acute
 ]
 vd_cohort_2 = [
-    "WDAN03",
-    "WDAN04",
+    "WDAN03", # dual acute
+    "WDAN04", # no histology
 ]
 vd_cohort_3 = [ # female
-    "WDAN05",
-    "WDAN06",
-    "WDAN07",
+    "WDAN05", # dual acute
+    "WDAN06", # apollo 1.0 chronic
+    "WDAN07", # dual acute
 ]
 vd_cohort_4 = [
-    "VDCN01",
-    "VDCN02",
-    "VDCN04",
+    "VDCN01", # apollo 2.0 chronic
+    "VDCN02", # apollo 2.0 chronic
+    "VDCN04", # apollo 2.0 alpha chronic
 ]
 vd_cohort_5 = [ # female
-    "VDCN05",
-    "VDCN09",
+    "VDCN05", # apollo 2.0 alpha chronic
+    "VDCN09", # apollo 2.0 alpha chronic
 ]
 
 '''
