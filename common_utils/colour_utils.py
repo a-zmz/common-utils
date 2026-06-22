@@ -142,4 +142,21 @@ pale = ["#BBCCEE", "#CCEEFF", "#CCDDAA", "#EEEEBB", "#FFCCCC", "#DDDDDD"]
 darker = ["#222255", "#225555", "#225522", "#666633", "#663333", "#555555"]
 lighter = ["#77AADD", "#EE8866", "#EEDD88", "#FFAABB", "#99DDFF", "#44BB99",
            "#BBCC33", "#AAAA00", "#DDDDDD"]
+# divergent
+blue_red = ["#2166AC", "#4393C3", "#92C5DE", "#D1E5F0", "#F7F7F7", "#FDDBC7",
+            "#F4A582", "#D6604D", "#B2182B"]
+sunset = ["#364B9A", "#4A7BB7", "#6EA6CD", "#98CAE1", "#C2E4EF", "#EAECCC",
+          "#FEDA8B", "#FDB366", "#F67E4B", "#DD3D2D", "#A50026"]
+# sequential
+rainbow_6 = ["#1965B0", "#7BAFDE", "#4EB265", "#CAE0AB", "#F7F056",
+                    "#DC050C"]
 # <<< colourblind friendly colours <<<
+
+# >>> velocity-position heatmap colours >>>
+cm_pos_velo = LinearSegmentedColormap.from_list(
+    "rainbow_6",
+    rainbow_6,
+    N=256,
+)
+# <<< velocity-position heatmap colours <<<
+
