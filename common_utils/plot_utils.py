@@ -171,21 +171,28 @@ def make_fixed_subplots(
         nrows, ncols, figsize=(fig_w, fig_h), **kwargs,
     )
 
+
     # tweak spacing to match wpad/hpad exactly
+    left = (margin_lr + extra_lr) / fig_w
+    right = 1 - (margin_lr + legend_w) / fig_w
+    bottom = margin_tb / fig_h
+    top = 1 - margin_tb / fig_h
+
     fig.subplots_adjust(
-        left=(margin_lr+extra_lr)/fig_w,
-        right=1-(margin_lr+legend_w)/fig_w,
-        bottom=margin_tb/fig_h,
-        top=1-margin_tb/fig_h,
+        left=left,
+        right=right,
+        bottom=bottom,
+        top=top,
         wspace=wpad/subplot_w,
         hspace=hpad/subplot_h,
     )
 
     ylabel_x = round(extra_lr / fig_w, 4)
+    title_x = (left + right) / 2
     # set position of figure x, ylabel, and suptitle
     fig.supxlabel(supxlabel, y=0.005)
     fig.supylabel(supylabel, x=ylabel_x)
-    fig.suptitle(suptitle, y=0.995, wrap=True)
+    fig.suptitle(suptitle, x=title_x, y=0.995, wrap=True)
 
     return fig, axes
 
