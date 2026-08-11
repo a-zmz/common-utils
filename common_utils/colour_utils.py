@@ -84,6 +84,25 @@ regions = {
     "HPF": HPF_blue[0],
     "na": gray60,
 }
+region_colour_map = {
+    "v1": "#B58FC2",
+    "visam": "#A778B4",
+    "vispm": "#9B62A7",
+    "ppc_visa": "#8C4E99",
+    "CA1": "#4E79C5",
+    "CA2": "#4D8AC6",
+    "CA3": "#4E96BC",
+    "DG": "#549EB3",
+    "ProS": "#59A5A9",
+    "TH": "#666666",
+    "LGNd": "#D1B541",
+    "LP": "#DDAA3C",
+    "LD": "#E49C39",
+    "VPM": "#E4632D",
+    "VPL": "#DF4828",
+    "PO": "#DA2222",
+    "APN": "#721E17",
+}
 
 # cell type: regular-spiker1, regular-spiker2, fast-spiker
 cell_types = ["rs1", "rs2", "fs"]
@@ -148,8 +167,13 @@ blue_red = ["#2166AC", "#4393C3", "#92C5DE", "#D1E5F0", "#F7F7F7", "#FDDBC7",
 sunset = ["#364B9A", "#4A7BB7", "#6EA6CD", "#98CAE1", "#C2E4EF", "#EAECCC",
           "#FEDA8B", "#FDB366", "#F67E4B", "#DD3D2D", "#A50026"]
 # sequential
-rainbow_6 = ["#1965B0", "#7BAFDE", "#4EB265", "#CAE0AB", "#F7F056",
-                    "#DC050C"]
+rainbow_6 = ["#1965B0", "#7BAFDE", "#4EB265", "#CAE0AB", "#F7F056", "#DC050C"]
+rainbow_34 = ["#E8ECFB", "#DDD8EF", "#D1C1E1", "#C3A8D1", "#B58FC2", "#A778B4",
+              "#9B62A7", "#8C4E99", "#6F4C9B", "#6059A9", "#5568B8", "#4E79C5",
+              "#4D8AC6", "#4E96BC", "#549EB3", "#59A5A9", "#60AB9E", "#69B190",
+              "#77B77D", "#8CBC68", "#A6BE54", "#BEBC48", "#D1B541", "#DDAA3C",
+              "#E49C39", "#E78C35", "#E67932", "#E4632D", "#DF4828", "#DA2222",
+              "#B8221E", "#95211B", "#721E17", "#521A13", "#666666"]
 # <<< colourblind friendly colours <<<
 
 # >>> velocity-position heatmap colours >>>
