@@ -156,7 +156,7 @@ def make_fixed_subplots(
     kwargs: keyword arguments for matplotlib.
     """
     extra_tb = 0.2 # for figure title
-    extra_lr = 0.2 # for figure x label
+    extra_l = 0.4 # for figure y label
 
     # for legend width
     legend_w = 1.0
@@ -164,16 +164,21 @@ def make_fixed_subplots(
     # add extra margin on top and bottom
     margin_tb = margin_tb + extra_tb
 
-    fig_w = ncols * subplot_w + (ncols - 1) * wpad + 2 * margin_lr + legend_w
+    fig_w = (
+        ncols * subplot_w
+        + (ncols - 1) * wpad
+        + 2 * margin_lr
+        + extra_l
+        + legend_w
+    )
     fig_h = nrows * subplot_h + (nrows - 1) * hpad + 2 * margin_tb
 
     fig, axes = plt.subplots(
         nrows, ncols, figsize=(fig_w, fig_h), **kwargs,
     )
 
-
     # tweak spacing to match wpad/hpad exactly
-    left = (margin_lr + extra_lr) / fig_w
+    left = (margin_lr + extra_l) / fig_w
     right = 1 - (margin_lr + legend_w) / fig_w
     bottom = margin_tb / fig_h
     top = 1 - margin_tb / fig_h
@@ -187,7 +192,7 @@ def make_fixed_subplots(
         hspace=hpad/subplot_h,
     )
 
-    ylabel_x = round(extra_lr / fig_w, 4)
+    ylabel_x = round(extra_l / fig_w, 4)
     title_x = (left + right) / 2
     # set position of figure x, ylabel, and suptitle
     fig.supxlabel(supxlabel, y=0.005)
