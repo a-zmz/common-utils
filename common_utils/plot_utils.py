@@ -126,7 +126,8 @@ def plot_QQ(data):
 
 def make_fixed_subplots(
     nrows, ncols, subplot_w=2, subplot_h=1, wpad=0.6, hpad=0.6, margin_lr=0.8,
-    margin_tb=0.8, supxlabel="", supylabel="", suptitle="", **kwargs,
+    margin_tb=0.8, supxlabel="", supylabel="", suptitle="", gridspec_kw=None,
+    **kwargs,
 ):
     """
     create figure with fixed size subplots.
@@ -153,8 +154,35 @@ def make_fixed_subplots(
         default: ""
     suptitle: str, figure sup title text.
         default: ""
+    gridspec_kw={"width_ratios": [...], "height_ratios": [...]}.
+        default: None
     kwargs: keyword arguments for matplotlib.
     """
+    axes_w = subplot_w * ncols
+    axes_h = subplot_h * nrows
+
+    if gridspec_kw is None:
+        gridspec_kw = {}
+    else:
+        width_ratios = gridspec_kw.get("width_ratios", None)
+        height_ratios = gridspec_kw.get("height_ratios", None)
+
+        if width_ratios is not None:
+            if len(width_ratios) != ncols:
+                raise ValueError(
+                    f"len(width_ratios)={len(width_ratios)} must equal "
+                    f"ncols={ncols}"
+                )
+            axes_w = sum([subplot_w * r for r in width_ratios])
+
+        if height_ratios is not None:
+            if len(height_ratios) != nrows:
+                raise ValueError(
+                    f"len(height_ratios)={len(height_ratios)} must equal "
+                    f"nrows={nrows}"
+                )
+            axes_h = sum([subplot_h * r for r in height_ratios])
+
     extra_tb = 0.2 # for figure title
     extra_l = 0.4 # for figure y label
 
@@ -165,16 +193,18 @@ def make_fixed_subplots(
     margin_tb = margin_tb + extra_tb
 
     fig_w = (
-        ncols * subplot_w
+        axes_w
         + (ncols - 1) * wpad
         + 2 * margin_lr
         + extra_l
         + legend_w
     )
-    fig_h = nrows * subplot_h + (nrows - 1) * hpad + 2 * margin_tb
+    fig_h = axes_h + (nrows - 1) * hpad + 2 * margin_tb
 
     fig, axes = plt.subplots(
-        nrows, ncols, figsize=(fig_w, fig_h), **kwargs,
+        nrows, ncols, figsize=(fig_w, fig_h),
+        gridspec_kw=gridspec_kw,
+        **kwargs,
     )
 
     # tweak spacing to match wpad/hpad exactly
@@ -183,13 +213,16 @@ def make_fixed_subplots(
     bottom = margin_tb / fig_h
     top = 1 - margin_tb / fig_h
 
+    avg_col_w = axes_w / ncols
+    avg_row_h = axes_h / nrows
+
     fig.subplots_adjust(
         left=left,
         right=right,
         bottom=bottom,
         top=top,
-        wspace=wpad/subplot_w,
-        hspace=hpad/subplot_h,
+        wspace=wpad/avg_col_w,
+        hspace=hpad/avg_row_h,
     )
 
     ylabel_x = round(extra_l / fig_w, 4)
