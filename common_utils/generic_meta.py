@@ -46,6 +46,16 @@ vd_cohort_5 = [ # female
     "VDCN09", # apollo 2.0 alpha chronic
 ]
 
+# food restricted chronic apollo npx 1.0
+fr_cohort_1 = [
+    "FRCN00",
+    "FRCN01",
+    "FRCN02", # no post
+    "FRCN03",
+    "FRCN04",
+    "FRCN05",
+]
+
 '''
 directories
 '''
