@@ -51,6 +51,8 @@ fr_cohort_1 = [
     "FRCN00",
     "FRCN01",
     "FRCN02", # no post
+]
+fr_cohort_2 = [
     "FRCN03",
     "FRCN04",
     "FRCN05",
