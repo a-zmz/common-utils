@@ -92,15 +92,22 @@ def save(path, fig=None, nosize=False, use_pdfpages=False):
 
 # TODO nov 7 this essentially is the same as Subplots2D class...
 # do some default setting of the figure & axes
-def get_subplots(nrows=1, ncols=2, figsize=(35, 15), sharex=True, sharey=True,
-                 *args, **kwargs):
-    fig, axes = plt.subplots(
+def get_subplots(
+    nrows=1, ncols=2, subplot_w=4, subplot_h=4, sharex=True, sharey=True,
+    supxlabel="", supylabel="", suptitle="", *args, **kwargs
+):
+
+    fig, axes = make_fixed_subplots(
         nrows=nrows,
         ncols=ncols,
-        figsize=figsize,
+        subplot_w=subplot_w,
+        subplot_h=subplot_h,
         sharex=sharex,
         sharey=sharey,
-        layout="constrained",
+        supxlabel=supxlabel,
+        supylabel=supylabel,
+        suptitle=suptitle,
+        **kwargs,
     )
 
     return fig, axes
